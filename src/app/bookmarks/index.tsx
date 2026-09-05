@@ -137,6 +137,7 @@ function CategoryCard({
   const IconComponent = CATEGORY_ICONS[category.id];
 
   return (
+     category.count > 0 &&
     <Pressable
       style={styles.categoryCard}
       onPress={() => {
@@ -156,10 +157,13 @@ function CategoryCard({
       </View>
       <View style={styles.categoryMid}>
         <Text style={styles.categoryTitle}>{category.title}</Text>
-        <Text style={styles.categorySubtitle} numberOfLines={1}>
+        
+
+          <Text style={styles.categorySubtitle} numberOfLines={1}>
           <Text style={styles.categoryCount}>{category.count}</Text>
           {' '}{category.countLabel} 
         </Text>
+        
       </View>
       <Svg width="16" height="16" viewBox="0 0 20 20" fill="none">
         <Path d="M7.5 4.5 13 10l-5.5 5.5" stroke={alpha(colors.secondary, 0.35)} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -180,10 +184,11 @@ export default function BookmarksScreen() {
 
     useFocusEffect(() => {
     async function loadCounts() {
-      const [quranCount, hadithCount, duaCount] = await Promise.all([
+      const [quranCount, hadithCount, duaCount, libraryCount] = await Promise.all([
         bookmarkService.getQuranCount(),
         bookmarkService.getHadithCount(),
         bookmarkService.getDuaCount(),
+        bookmarkService.getLibraryCount(),
       ]);
 
       const cats: BookmarkCategory[] = STATIC_CATEGORIES.map((cat) => {
@@ -191,6 +196,7 @@ export default function BookmarksScreen() {
           case 'quran': return { ...cat, count: quranCount };
           case 'hadith': return { ...cat, count: hadithCount };
           case 'duas': return { ...cat, count: duaCount };
+          case 'library' : return {...cat, count: libraryCount}
           default: return { ...cat, count: PLACEHOLDER_COUNTS[cat.id] || 0 };
         }
       });
@@ -210,7 +216,7 @@ export default function BookmarksScreen() {
         style={styles.scrollView}
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: insets.top + 16, paddingBottom: insets.bottom + 32 },
+          { paddingTop: 16, paddingBottom: insets.bottom + 32 },
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -225,12 +231,12 @@ export default function BookmarksScreen() {
             <Text style={styles.headerTitle}>Bookmarks</Text>
             <Text style={styles.headerSubtitle}>Everything you've saved</Text>
           </View>
-          <Pressable style={styles.headerBtn} onPress={() => {}}>
+          {/* <Pressable style={styles.headerBtn} onPress={() => {}}>
             <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <Circle cx="9" cy="9" r="6.5" stroke={colors.secondary} strokeWidth="1.8" />
               <Path d="M14 14 L18 18" stroke={colors.secondary} strokeWidth="1.8" strokeLinecap="round" />
             </Svg>
-          </Pressable>
+          </Pressable> */}
         </View>
 
         {/* Summary card */}
@@ -291,12 +297,12 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontFamily: 'Poppins',
     fontWeight: '600',
-    fontSize: 26,
+    fontSize: 22,
     letterSpacing: -0.01,
     color: colors.secondary,
   },
   headerSubtitle: {
-    marginTop: 3,
+    // marginTop: 3,
     fontSize: 13,
     color: colors.textSecondary,
   },

@@ -22,6 +22,7 @@ import { colors, alpha } from '../../constants/theme';
 import { QuranBookmark, PositionBookmark } from '../../types/bookmark';
 import { bookmarkService } from '../../services/bookmarkService';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BackIcon, ClockIcon, DeleteIcon, EmptyPositionIcon, MoreIcon, QuranIcon, RemoveIcon, SearchIcon } from '@/components/Icons';
 
 // ============================================
 // HELPERS
@@ -40,57 +41,6 @@ function formatDate(isoString: string): string {
 // ICONS
 // ============================================
 
-function ClockIcon() {
-  return (
-    <Svg width="12" height="12" viewBox="0 0 20 20" fill="none">
-      <Circle cx="10" cy="10" r="7.5" stroke={colors.textMuted} strokeWidth="1.6" />
-      <Path d="M10 6v4.2l2.8 1.6" stroke={colors.textMuted} strokeWidth="1.6" strokeLinecap="round" />
-    </Svg>
-  );
-}
-
-function MoreIcon() {
-  return (
-    <Svg width="16" height="16" viewBox="0 0 20 20" fill={colors.textMuted}>
-      <Circle cx="4.5" cy="10" r="1.6" />
-      <Circle cx="10" cy="10" r="1.6" />
-      <Circle cx="15.5" cy="10" r="1.6" />
-    </Svg>
-  );
-}
-
-function ChevronRight() {
-  return (
-    <Svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-      <Path d="M7.5 4.5 13 10l-5.5 5.5" stroke={alpha(colors.secondary, 0.35)} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </Svg>
-  );
-}
-function NumberBadge({ number }: { number: number }) {
-  return (
-    <View style={styles.numBadge}>
-      <Text style={styles.numBadgeText}>{number}</Text>
-    </View>
-  );
-}
-
-function EmptyAyahIcon() {
-  return (
-    <Svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-      <Path d="M12 6.5C10.4 5.3 8.2 5.2 6 6v12c2.2-.8 4.4-.7 6 .5 1.6-1.2 3.8-1.3 6-.5V6c-2.2-.8-4.4-.7-6 .5Z" stroke={colors.textMuted} strokeWidth="1.5" strokeLinejoin="round" />
-      <Path d="M12 6.5v12" stroke={colors.textMuted} strokeWidth="1.5" strokeLinejoin="round" />
-    </Svg>
-  );
-}
-
-function EmptyPositionIcon() {
-  return (
-    <Svg width="40" height="40" viewBox="0 0 44 44" fill="none">
-      <Rect x="11" y="11" width="22" height="22" rx="5" stroke={colors.textMuted} strokeWidth="1.5" />
-      <Rect x="11" y="11" width="22" height="22" rx="5" stroke={colors.textMuted} strokeWidth="1.5" transform="rotate(45 22 22)" />
-    </Svg>
-  );
-}
 
 // ============================================
 // DELETE CONFIRMATION SHEET
@@ -170,15 +120,8 @@ function DeleteSheet({
                 setTimeout(onDelete, 250);
               }}
             >
-              <Svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                <Path
-                  d="M5 5l10 10M15 5L5 15"
-                  stroke={colors.error}
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </Svg>
+            
+              <DeleteIcon size={18} color={colors.error} opacity={0.7}/>
               <Text style={deleteSheetStyles.deleteBtnText}>Delete</Text>
             </Pressable>
 
@@ -275,7 +218,7 @@ function AyahBookmarkCard({
           <Text style={styles.ayahRefText}>{bookmark.surahNumber}:{bookmark.ayahNumber}</Text>
         </View>
         <Pressable style={styles.moreBtn} onPress={onMorePress}>
-          <MoreIcon />
+          <MoreIcon size={16} color={colors.textMuted} />
         </Pressable>
       </View>
 
@@ -289,7 +232,7 @@ function AyahBookmarkCard({
 
       <View style={styles.ayahFooter}>
         <View style={styles.dateRow}>
-          <ClockIcon />
+          <ClockIcon size={12} color={colors.textMuted} />
           <Text style={styles.dateText}>{formatDate(bookmark.dateSaved)}</Text>
         </View>
         {bookmark.note ? (
@@ -415,26 +358,21 @@ export default function QuranBookmarksScreen() {
         style={styles.scrollView}
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: insets.top + 16, paddingBottom: insets.bottom + 32 },
+          { paddingTop: 16, paddingBottom: insets.bottom + 32 },
         ]}
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
         <View style={styles.header}>
           <Pressable style={styles.headerBtn} onPress={() => router.back()}>
-            <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <Path d="M12.5 4.5 7 10l5.5 5.5" stroke={colors.secondary} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </Svg>
+           <BackIcon/>
           </Pressable>
           <View style={styles.headerTitleContainer}>
             <Text style={styles.headerTitle}>Quran Bookmarks</Text>
             <Text style={styles.headerSubtitle}>Your saved ayahs & positions</Text>
           </View>
           <Pressable style={styles.headerBtn} onPress={() => {}}>
-            <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <Circle cx="9" cy="9" r="6.5" stroke={colors.secondary} strokeWidth="1.8" />
-              <Path d="M14 14 L18 18" stroke={colors.secondary} strokeWidth="1.8" strokeLinecap="round" />
-            </Svg>
+           <SearchIcon  size={20}/>
           </Pressable>
         </View>
 
@@ -462,7 +400,7 @@ export default function QuranBookmarksScreen() {
             ) : ayahBookmarks.length === 0 ? (
               <View style={styles.emptyContainer}>
                 <View style={styles.emptyIcon}>
-                  <EmptyAyahIcon />
+                  <QuranIcon size={40} color={colors.textMuted} />
                 </View>
                 <Text style={styles.emptyTitle}>No ayah bookmarks yet</Text>
                 <Text style={styles.emptySubtitle}>
@@ -495,7 +433,7 @@ export default function QuranBookmarksScreen() {
             ) : positionBookmarks.length === 0 ? (
               <View style={styles.emptyContainer}>
                 <View style={styles.emptyIcon}>
-                  <EmptyPositionIcon />
+                  <EmptyPositionIcon size={40} color={colors.textMuted} />
                 </View>
                 <Text style={styles.emptyTitle}>No page bookmarks yet</Text>
                 <Text style={styles.emptySubtitle}>
@@ -573,12 +511,12 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontFamily: 'Poppins',
     fontWeight: '600',
-    fontSize: 24,
+    fontSize: 20,
     letterSpacing: -0.01,
     color: colors.secondary,
   },
   headerSubtitle: {
-    marginTop: 2,
+    // marginTop: 2,
     fontSize: 12.5,
     color: colors.textSecondary,
   },

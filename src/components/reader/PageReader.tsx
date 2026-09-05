@@ -145,7 +145,7 @@ export function PageReader({
     <View>
       {/* Page Card — tappable */}
       <Pressable onPress={handleCardPress}>
-        <View style={[styles.pageCard, { marginTop: insets.top + 70 }]}>
+        <View style={[styles.pageCard, { marginTop: 60 }]}>
           {/* Page header */}
           <View style={styles.pageHeader}>
             <Text style={styles.pageHeaderText}>

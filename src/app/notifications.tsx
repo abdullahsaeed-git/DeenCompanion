@@ -11,24 +11,25 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import Svg, { Path, Circle, Rect, G } from 'react-native-svg';
 import { colors, alpha } from '../constants/theme';
+import { BackIcon } from '@/components/Icons';
 
 // ============================================
 // ICONS
 // ============================================
 
-function BackIcon() {
-  return (
-    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-      <Path
-        d="M12.5 4.5 7 10l5.5 5.5"
-        stroke={colors.secondary}
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-}
+// function BackIcon() {
+//   return (
+//     <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
+//       <Path
+//         d="M12.5 4.5 7 10l5.5 5.5"
+//         stroke={colors.secondary}
+//         strokeWidth={2}
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+//     </Svg>
+//   );
+// }
 
 // ============================================
 // ILLUSTRATION
@@ -124,7 +125,7 @@ export default function NotificationsScreen() {
         style={styles.scrollView}
         contentContainerStyle={[
           styles.content,
-          { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 34 },
+          { paddingTop: 8, paddingBottom: insets.bottom + 34 },
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -210,7 +211,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     paddingBottom: 12,
   },
   backBtn: {
@@ -223,7 +224,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Poppins',
     fontWeight: '600',
-    fontSize: 18,
+    fontSize: 20,
     color: colors.secondary,
   },
   headerSpacer: {

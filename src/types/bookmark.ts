@@ -35,3 +35,11 @@ export interface PageActionInfo {
   surahName?: string;
   type: 'juz' | 'page';
 }
+
+export interface LibraryBookmark {
+  id: string;
+  title: string;
+  author: string;
+  categoryId: string;
+  savedAt: number;
+}

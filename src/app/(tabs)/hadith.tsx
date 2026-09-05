@@ -17,6 +17,7 @@ import {
   ScrollView,
   ActivityIndicator,
   StyleSheet,
+  TextInput,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -26,6 +27,7 @@ import { HadithCollection } from '../../types/hadith';
 import { hadithService } from '../../services/hadithService';
 import { FeaturedCollection } from '../../components/hadith/FeaturedCollection';
 import { CollectionCard } from '../../components/hadith/CollectionCard';
+import { BookmarkIcon, SearchIcon } from '@/components/Icons';
 
 export default function HadithScreen() {
   const insets = useSafeAreaInsets();
@@ -75,7 +77,7 @@ export default function HadithScreen() {
   return (
     <View style={styles.screen}>
       {/* ========== HEADER ========== */}
-      <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
+      <View style={[styles.header, { paddingTop:  16 }]}>
         <Text style={styles.title}>Hadith</Text>
         <View style={styles.headerActions}>
           <Pressable
@@ -83,16 +85,9 @@ export default function HadithScreen() {
               styles.iconButton,
               pressed && styles.iconButtonPressed,
             ]}
+             onPress={() => router.push({pathname : '/search' , params: {mode : 'hadith'}})}
           >
-            <Svg width={19} height={19} viewBox="0 0 20 20" fill="none">
-              <Circle cx={9} cy={9} r={6.5} stroke={colors.secondary} strokeWidth={1.8} />
-              <Path
-                d="M14 14 L18 18"
-                stroke={colors.secondary}
-                strokeWidth={1.8}
-                strokeLinecap="round"
-              />
-            </Svg>
+            <SearchIcon color={colors.secondary}/>
           </Pressable>
           <Pressable
             style={({ pressed }) => [
@@ -102,14 +97,7 @@ export default function HadithScreen() {
             ]}
             onPress={() => router.push('/bookmarks/hadith')}
           >
-            <Svg width={19} height={19} viewBox="0 0 20 20" fill="none">
-              <Path
-                d="M6 3h8v14l-4-3.2L6 17Z"
-                stroke={colors.secondary}
-                strokeWidth={1.7}
-                strokeLinejoin="round"
-              />
-            </Svg>
+           <BookmarkIcon/>
           </Pressable>
         </View>
       </View>
@@ -123,6 +111,23 @@ export default function HadithScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
+
+          {/* Search — hidden on Page tab */}
+              {
+                <Pressable
+                  style={[styles.searchWrap]}
+                   onPress={() => router.push({pathname : '/search' , params: {mode : 'hadith'}})}
+                >
+                  <SearchIcon />
+                  <TextInput
+                    style={styles.searchInput}
+                    placeholder={"Search Hadiths"}
+                    placeholderTextColor={colors.textMuted}
+                    editable= {false}
+                   
+                  />
+                </Pressable>
+              }
         {loading && (
           <View style={styles.centered}>
             <ActivityIndicator size="large" color={colors.primary} />
@@ -172,7 +177,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingTop: 16,
+    // paddingTop: 16,
     gap: 16,
   },
   header: {
@@ -191,7 +196,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Poppins',
     fontWeight: '600',
-    fontSize: 26,
+    fontSize: 24,
     letterSpacing: -0.01,
     color: colors.secondary,
   },
@@ -216,6 +221,39 @@ const styles = StyleSheet.create({
   },
   iconButtonPressed: {
     backgroundColor: colors.pressedBg,
+  },
+
+  searchWrap: {
+    marginTop: 14,
+    height: 52,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    paddingHorizontal: 16,
+    shadowColor: alpha(colors.secondary, 0.04),
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 12,
+    elevation: 2,
+  },
+  searchWrapFocused: {
+    borderColor: colors.primary,
+    shadowColor: alpha(colors.primary, 0.12),
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  searchInput: {
+    flex: 1,
+    height: "100%",
+    fontSize: 15,
+    color: colors.secondary,
+    fontFamily: "Inter",
   },
   grid: {
     flexDirection: 'row',

@@ -243,8 +243,13 @@ export const prayerService = {
     country: string,
     method: number = 1
   ): Promise<PrayerApiResult> => {
-    const url = `${BASE_URL}/timingsByCity?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=${method}&school=0`;
+    
+    console.log("Get timings by city called");
+    const url = `${BASE_URL}/timingsByCity?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=${method}&school=0&calendarMethod=MATHEMATICAL`;
     const res = await fetch(url);
+
+    // console.log("url: ", url)
+    // console.log("Response: ", res)
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json: AladhanResponse = await res.json();
     if (json.code !== 200) throw new Error(json.status);
@@ -282,9 +287,11 @@ export const prayerService = {
     longitude: number,
     method: number = 1
   ): Promise<PrayerApiResult> => {
+    console.log("Get Timings called");
     const dateStr = new Date().toISOString().split('T')[0];
-    const url = `${BASE_URL}/timings/${dateStr}?latitude=${latitude}&longitude=${longitude}&method=${method}&school=0`;
+    const url = `${BASE_URL}/timings/${dateStr}?latitude=${latitude}&longitude=${longitude}&method=${method}&school=0&calendarMethod=MATHEMATICAL&adjustment=-1`;
     const res = await fetch(url);
+    
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json: AladhanResponse = await res.json();
     if (json.code !== 200) throw new Error(json.status);
@@ -324,8 +331,13 @@ export const prayerService = {
     month: number,
     year: number
   ): Promise<{ days: CalendarDay[]; timezone: string | null }> => {
-    const url = `${BASE_URL}/calendarByCity?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=${method}&month=${month}&year=${year}&school=0`;
+    
+    console.log("Get calendar by city called");
+    const url = `${BASE_URL}/calendarByCity?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=${method}&month=${month}&year=${year}&school=0&calendarMethod=MATHEMATICAL&adjustment=-1`;
     const res = await fetch(url);
+
+    console.log("url: ", url)
+    console.log("Response: ", res)
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
     if (json.code !== 200) throw new Error(json.status);

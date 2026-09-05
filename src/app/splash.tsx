@@ -177,7 +177,7 @@ function GlowEffect() {
 }
 
 function LoaderSpinner({
-  spin,
+  spin, 
   opacity,
 }: {
   spin: Animated.AnimatedInterpolation<string | number>;
@@ -255,7 +255,7 @@ export default function SplashScreen() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace('/');
+      // router.replace('/');
     }, 2500);
     return () => clearTimeout(timer);
   }, []);

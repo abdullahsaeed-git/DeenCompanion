@@ -26,6 +26,7 @@ import { router } from 'expo-router';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 import { colors, alpha } from '../constants/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CheckIcon, ChevronRightIcon, CloseIcon, HistoryIcon, ResetIcon, SwapIcon, TargetIcon } from '@/components/Icons';
 
 // ============================================
 // TYPES & DATA
@@ -119,86 +120,86 @@ function BeadsIcon({ size = 22 }: { size?: number }) {
   );
 }
 
-function ChevronRightIcon({ color = alpha(colors.secondary, 0.35) }: { color?: string }) {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 20 20" fill="none">
-      <Path
-        d="M7.5 4.5 13 10l-5.5 5.5"
-        stroke={color}
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-}
+// function ChevronRightIcon({ color = alpha(colors.secondary, 0.35) }: { color?: string }) {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 20 20" fill="none">
+//       <Path
+//         d="M7.5 4.5 13 10l-5.5 5.5"
+//         stroke={color}
+//         strokeWidth={2}
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+//     </Svg>
+//   );
+// }
 
-function ResetIcon() {
-  return (
-    <Svg width={19} height={19} viewBox="0 0 20 20" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M4.5 8a6 6 0 1 1 1 5.2M4.5 3.8V8h4.2" />
-    </Svg>
-  );
-}
+// function ResetIcon() {
+//   return (
+//     <Svg width={19} height={19} viewBox="0 0 20 20" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+//       <Path d="M4.5 8a6 6 0 1 1 1 5.2M4.5 3.8V8h4.2" />
+//     </Svg>
+//   );
+// }
 
-function SwapIcon() {
-  return (
-    <Svg width={19} height={19} viewBox="0 0 20 20" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M4 7h10M11.5 4 14.5 7l-3 3M16 13H6M8.5 10 5.5 13l3 3" />
-    </Svg>
-  );
-}
+// function SwapIcon() {
+//   return (
+//     <Svg width={19} height={19} viewBox="0 0 20 20" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+//       <Path d="M4 7h10M11.5 4 14.5 7l-3 3M16 13H6M8.5 10 5.5 13l3 3" />
+//     </Svg>
+//   );
+// }
 
-function VibrationIcon({ on }: { on?: boolean }) {
-  const color = on ? colors.primary : colors.primary;
-  return (
-    <Svg width={19} height={19} viewBox="0 0 20 20" fill="none" stroke={color} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
-      <Rect x={7} y={4} width={6} height={12} rx={1.5} />
-      <Path d="M4 7.5c-1.2 1.5-1.2 3.5 0 5M16 7.5c1.2 1.5 1.2 3.5 0 5" />
-    </Svg>
-  );
-}
+// function VibrationIcon({ on }: { on?: boolean }) {
+//   const color = on ? colors.primary : colors.primary;
+//   return (
+//     <Svg width={19} height={19} viewBox="0 0 20 20" fill="none" stroke={color} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+//       <Rect x={7} y={4} width={6} height={12} rx={1.5} />
+//       <Path d="M4 7.5c-1.2 1.5-1.2 3.5 0 5M16 7.5c1.2 1.5 1.2 3.5 0 5" />
+//     </Svg>
+//   );
+// }
 
-function HistoryIcon() {
-  return (
-    <Svg width={19} height={19} viewBox="0 0 20 20" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round">
-      <Circle cx={10} cy={10} r={7.5} />
-      <Path d="M10 6v4.2l2.8 1.6" />
-    </Svg>
-  );
-}
+// function HistoryIcon() {
+//   return (
+//     <Svg width={19} height={19} viewBox="0 0 20 20" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round">
+//       <Circle cx={10} cy={10} r={7.5} />
+//       <Path d="M10 6v4.2l2.8 1.6" />
+//     </Svg>
+//   );
+// }
 
-function TargetIcon() {
-  return (
-    <Svg width={15} height={15} viewBox="0 0 20 20" fill="none" stroke={colors.primary} strokeWidth={1.7}>
-      <Circle cx={10} cy={10} r={7.5} />
-      <Circle cx={10} cy={10} r={4} />
-      <Circle cx={10} cy={10} r={1} fill={colors.primary} />
-    </Svg>
-  );
-}
+// function TargetIcon() {
+//   return (
+//     <Svg width={15} height={15} viewBox="0 0 20 20" fill="none" stroke={colors.primary} strokeWidth={1.7}>
+//       <Circle cx={10} cy={10} r={7.5} />
+//       <Circle cx={10} cy={10} r={4} />
+//       <Circle cx={10} cy={10} r={1} fill={colors.primary} />
+//     </Svg>
+//   );
+// }
 
-function CheckIcon({ size = 18 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 20 20" fill="none">
-      <Path
-        d="M4 10.5l4 4 8-8"
-        stroke={colors.primary}
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-}
+// function CheckIcon({ size = 18 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 20 20" fill="none">
+//       <Path
+//         d="M4 10.5l4 4 8-8"
+//         stroke={colors.primary}
+//         strokeWidth={2}
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+//     </Svg>
+//   );
+// }
 
-function CloseIcon() {
-  return (
-    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" stroke={colors.secondary} strokeWidth={2} strokeLinecap="round">
-      <Path d="M5 5l10 10M15 5L5 15" />
-    </Svg>
-  );
-}
+// function CloseIcon() {
+//   return (
+//     <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" stroke={colors.secondary} strokeWidth={2} strokeLinecap="round">
+//       <Path d="M5 5l10 10M15 5L5 15" />
+//     </Svg>
+//   );
+// }
 
 // ============================================
 // PROGRESS RING
@@ -454,25 +455,17 @@ export default function TasbihScreen() {
   return (
     <View style={styles.screen}>
       {/* Header */}
-      {/* <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
-        <Pressable style={[styles.headerBtn, {}]} onPress={() => router.back()}>
-          <BackIcon />
-        </Pressable>
-        <View style= {{}}>
-        <Text style={styles.title}>Tasbih</Text>
-        </View>
-        <Pressable style={styles.headerBtn} onPress={() => setShowPicker(true)}>
-           <GearIcon /> 
-        </Pressable>
-      </View> */}
+     
 
-      <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
+      <View style={[styles.header, { paddingTop: 8}]}>
  <Pressable style={styles.headerBtn} onPress={() => router.back()}>
   <BackIcon />
 </Pressable>
-  <View style={{ flex: 1, alignItems: 'center' }}>
+  <View >
     <Text style={styles.title}>Tasbih</Text>
   </View>
+  {/* <View style= {{width: 44}}/> */}
+  
 </View>
 
       <ScrollView
@@ -537,7 +530,7 @@ export default function TasbihScreen() {
             <Text style={styles.controlLabel}>Change Dhikr</Text>
           </Pressable>
 
-          <Pressable
+          {/* <Pressable
             style={({ pressed }) => [
               styles.controlBtn,
               vibrationOn && styles.controlBtnOn,
@@ -549,7 +542,7 @@ export default function TasbihScreen() {
             <Text style={[styles.controlLabel, vibrationOn && styles.controlLabelOn]}>
               Vibration
             </Text>
-          </Pressable>
+          </Pressable> */}
 
           <Pressable
             style={({ pressed }) => [styles.controlBtn, pressed && styles.controlBtnPressed]}
@@ -569,7 +562,7 @@ export default function TasbihScreen() {
         onClose={() => setShowPicker(false)}
       />
 
-            <HistoryModal
+        <HistoryModal
         visible={showHistory}
         history={history}
         onClose={() => setShowHistory(false)}
@@ -602,9 +595,10 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    gap: 6,
+    paddingBottom: 4,
+    // justifyContent: 'center',
     paddingHorizontal: 12,
-    paddingBottom: 12,
     backgroundColor: colors.background,
     zIndex: 1,
   },
@@ -619,8 +613,8 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Poppins',
     fontWeight: '600',
-    fontSize: 26,
-    letterSpacing: -0.01,
+    fontSize: 20,
+    // letterSpacing: -0.01,
     color: colors.secondary,
   },
 

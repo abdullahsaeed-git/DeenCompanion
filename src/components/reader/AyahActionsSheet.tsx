@@ -17,6 +17,7 @@ import {
 import Svg, { Path, Rect } from 'react-native-svg';
 import { colors, alpha } from '../../constants/theme';
 import { Ayah } from '../../types/quran';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AyahActionsSheetProps {
   visible: boolean;
@@ -46,6 +47,8 @@ export function AyahActionsSheet({
   const closingRef = useRef(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
+
+  const insets = useSafeAreaInsets();
 
   const animateOpen = useCallback(() => {
     closingRef.current = false;
@@ -133,6 +136,7 @@ export function AyahActionsSheet({
             {
               transform: [{ translateY: slideAnim }],
             },
+           { paddingBottom: insets.bottom },
           ]}
         >
           {/* Close button */}

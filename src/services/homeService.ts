@@ -8,6 +8,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { quranService } from './quranService';
 import { hadithService } from './hadithService';
+import { registerCacheClearer } from './languageService';
+
+
+registerCacheClearer(async () => {
+  const keys = await AsyncStorage.getAllKeys();
+  const toDelete = keys.filter((k) => k.startsWith('votd__') || k.startsWith('hotd_'));
+  if (toDelete.length > 0) {
+    await AsyncStorage.multiRemove(toDelete);
+  }
+});
 
 const VOTD_KEY = '@deen_companion_votd';
 const HOTD_KEY = '@deen_companion_hotd';
@@ -49,6 +59,8 @@ function getDayOfYear(): number {
   const diff = now.getTime() - start.getTime();
   return Math.floor(diff / (1000 * 60 * 60 * 24));
 }
+
+
 
 export const homeService = {
   /** Fetch or return cached Verse of the Day */
@@ -98,6 +110,37 @@ export const homeService = {
     }
   },
 
+  /** Fetch a random verse and SET it as today's verse */
+  async getRandomVerse(): Promise<VerseOfTheDayData | null> {
+    const today = getTodayKey();
+    const cacheKey = `${VOTD_KEY}_${today}`;                        // ← same key
+
+    try {
+      const surahs = await quranService.getAllSurahs();
+      const randomIndex = Math.floor(Math.random() * surahs.length);
+      const targetSurah = surahs[randomIndex];
+      const targetAyahNumber = Math.floor(Math.random() * targetSurah.ayahCount) + 1;
+
+      const surahDetail = await quranService.getSurahWithTranslation(targetSurah.number);
+      const ayah = surahDetail.ayahs[targetAyahNumber - 1];
+      if (!ayah) return null;
+
+      const data: VerseOfTheDayData = {
+        arabic: ayah.text,
+        translation: ayah.translation || '',
+        reference: `${surahDetail.englishName} ${surahDetail.number}:${ayah.numberInSurah}`,
+        surahName: surahDetail.englishName,
+        surahNumber: surahDetail.number,
+        ayahNumber: ayah.numberInSurah,
+      };
+
+      await AsyncStorage.setItem(cacheKey, JSON.stringify(data));  // ← THIS is the only new line
+      return data;
+    } catch {
+      return null;
+    }
+  },
+
   /** Fetch or return cached Hadith of the Day */
   async getHadithOfTheDay(): Promise<HadithOfTheDayData | null> {
     const today = getTodayKey();
@@ -138,34 +181,11 @@ export const homeService = {
     }
   },
 
-
-    /** Fetch a random verse (for manual refresh) */
-  async getRandomVerse(): Promise<VerseOfTheDayData | null> {
-    try {
-      const surahs = await quranService.getAllSurahs();
-      const randomIndex = Math.floor(Math.random() * surahs.length);
-      const targetSurah = surahs[randomIndex];
-      const targetAyahNumber = Math.floor(Math.random() * targetSurah.ayahCount) + 1;
-
-      const surahDetail = await quranService.getSurahWithTranslation(targetSurah.number);
-      const ayah = surahDetail.ayahs[targetAyahNumber - 1];
-      if (!ayah) return null;
-
-      return {
-        arabic: ayah.text,
-        translation: ayah.translation || '',
-        reference: `${surahDetail.englishName} ${surahDetail.number}:${ayah.numberInSurah}`,
-        surahName: surahDetail.englishName,
-        surahNumber: surahDetail.number,
-        ayahNumber: ayah.numberInSurah,
-      };
-    } catch {
-      return null;
-    }
-  },
-
-  /** Fetch a random hadith (for manual refresh) */
+  /** Fetch a random hadith and SET it as today's hadith */
   async getRandomHadith(): Promise<HadithOfTheDayData | null> {
+    const today = getTodayKey();
+    const cacheKey = `${HOTD_KEY}_${today}`;                        // ← same key
+
     try {
       let hadithNumber = Math.floor(Math.random() * 7000) + 1;
       let hadith = null;
@@ -180,7 +200,7 @@ export const homeService = {
       }
       if (!hadith) return null;
 
-      return {
+      const data: HadithOfTheDayData = {
         narrator: hadith.narrator,
         translation: hadith.translation,
         reference: hadith.reference,
@@ -188,6 +208,9 @@ export const homeService = {
         collectionId: 'bukhari',
         hadithNumber: hadith.hadithNumber,
       };
+
+      await AsyncStorage.setItem(cacheKey, JSON.stringify(data));  // ← THIS is the only new line
+      return data;
     } catch {
       return null;
     }
@@ -211,6 +234,8 @@ export const homeService = {
       ...progress,
       lastReadAt: new Date().toISOString(),
     };
+    console.log("save reading " , data)
+    console.log('reading key', READING_KEY)
     await AsyncStorage.setItem(READING_KEY, JSON.stringify(data));
   },
 };

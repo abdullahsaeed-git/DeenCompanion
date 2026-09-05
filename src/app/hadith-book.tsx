@@ -34,7 +34,14 @@ function StatsCard({ collection }: { collection: HadithCollection | null }) {
       </View>
       <View>
         <Text style={styles.statsTitle}>{collection.hadithCount.toLocaleString()} Hadiths</Text>
-        <Text style={styles.statsSub}>{collection.languages.join(' · ')} · {collection.authorInfo}</Text>
+        <View style={{ gap: 4, marginTop:4 }}>
+          <Text  style={styles.statsSub}>
+            {collection.languages.join(' · ')}
+            </Text>
+          <Text  style={styles.statsSub}>
+           {collection.authorInfo}
+          </Text>
+           </View>
       </View>
     </View>
   );
@@ -114,7 +121,7 @@ export default function HadithBookScreen() {
         style={styles.scrollView}
         contentContainerStyle={[
           styles.content,
-          { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 34 },
+          { paddingTop:  8, paddingBottom: insets.bottom + 34 },
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -122,7 +129,7 @@ export default function HadithBookScreen() {
           title={collection?.name || 'Loading…'}
           arabicTitle={collection?.arabicTitle}
           subtitle={collection?.authorInfo}
-          titleSize={22}
+          titleSize={18}
         />
 
         <StatsCard collection={collection} />
@@ -214,7 +221,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statsTitle: { fontSize: 14.5, fontWeight: '600', color: colors.primary },
-  statsSub: { fontSize: 12, color: colors.textSecondary, marginTop: 2 },
+  statsSub: { fontSize: 12, color: colors.textSecondary },
   card: {
     backgroundColor: colors.surface,
     borderWidth: 1,

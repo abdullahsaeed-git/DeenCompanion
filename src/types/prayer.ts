@@ -17,21 +17,38 @@ export type PrayerRowState = 'past' | 'next' | 'upcoming';
 
 /** A single day from the Aladhan calendar API */
 export interface CalendarDay {
-  timings: Record<string, string>;
+  timings: {
+    Fajr: string;
+    Sunrise: string;
+    Dhuhr: string;
+    Asr: string;
+    Maghrib: string;
+    Isha: string;
+  };
   date: {
     readable: string;
     gregorian: {
       date: string;
       day: string;
       weekday: { en: string };
-      month: { number: number; en: string };
+      month: { en: string; number: number };
       year: string;
     };
     hijri: {
       date: string;
       day: string;
-      month: { number: number; en: string; ar: string };
+      month: { en: string; ar: string; number: number };
       year: string;
     };
+  };
+  // Add this meta block:
+  meta: {
+    timezone: string;
+    method: {
+      id: number;
+      name: string;
+    };
+    latitude: number;
+    longitude: number;
   };
 }

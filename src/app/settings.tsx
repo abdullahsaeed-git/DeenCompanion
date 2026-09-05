@@ -5,150 +5,168 @@
  * Route: /settings
  */
 
-import { useState } from 'react';
-import { View, Text, Pressable, ScrollView, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import Svg, { Path, Circle } from 'react-native-svg';
-import { colors, alpha } from '../constants/theme';
+import { useCallback, useState } from "react";
+import { View, Text, Pressable, ScrollView, StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { router, useFocusEffect } from "expo-router";
+import Svg, { Path, Circle } from "react-native-svg";
+import { colors, alpha } from "../constants/theme";
+import {
+  ArabicFontIcon,
+  AudioIcon,
+  BackIcon,
+  BellIcon,
+  BookIcon,
+  ChevronRightIcon,
+  GlobeIcon,
+  InfoIcon,
+} from "@/components/Icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { settingsService, FONT_SIZE_CONFIG, getDefaultTranslationSize } from "../services/settingsService";
 
-// ============================================
+
 // ROW ICONS
 // ============================================
 
-function GlobeIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7}>
-      <Circle cx={12} cy={12} r={8} />
-      <Path d="M4 12h16M12 4c2.5 2.4 3.8 5.2 3.8 8S14.5 17.6 12 20c-2.5-2.4-3.8-5.2-3.8-8S9.5 6.4 12 4Z" />
-    </Svg>
-  );
-}
+// function GlobeIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7}>
+//       <Circle cx={12} cy={12} r={8} />
+//       <Path d="M4 12h16M12 4c2.5 2.4 3.8 5.2 3.8 8S14.5 17.6 12 20c-2.5-2.4-3.8-5.2-3.8-8S9.5 6.4 12 4Z" />
+//     </Svg>
+//   );
+// }
 
-function BookIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
-      <Path d="M12 6.5C10.4 5.3 8.2 5.2 6 6v12c2.2-.8 4.4-.7 6 .5 1.6-1.2 3.8-1.3 6-.5V6c-2.2-.8-4.4-.7-6 .5Z" />
-      <Path d="M12 6.5v12" />
-    </Svg>
-  );
-}
+// function BookIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
+//       <Path d="M12 6.5C10.4 5.3 8.2 5.2 6 6v12c2.2-.8 4.4-.7 6 .5 1.6-1.2 3.8-1.3 6-.5V6c-2.2-.8-4.4-.7-6 .5Z" />
+//       <Path d="M12 6.5v12" />
+//     </Svg>
+//   );
+// }
 
-function AudioIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round">
-      <Path d="M9 18V7l9-2.5V15" />
-      <Circle cx={7} cy={18} r={2.4} />
-      <Circle cx={16} cy={15} r={2.4} />
-    </Svg>
-  );
-}
+// function AudioIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round">
+//       <Path d="M9 18V7l9-2.5V15" />
+//       <Circle cx={7} cy={18} r={2.4} />
+//       <Circle cx={16} cy={15} r={2.4} />
+//     </Svg>
+//   );
+// }
 
-function ArabicFontIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M5 17 9 7l4 10M6.4 13.8h5.2M14.5 17l3-7.5 3 7.5M15.6 14.6h3.8" />
-    </Svg>
-  );
-}
+// function ArabicFontIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+//       <Path d="M5 17 9 7l4 10M6.4 13.8h5.2M14.5 17l3-7.5 3 7.5M15.6 14.6h3.8" />
+//     </Svg>
+//   );
+// }
 
-function BellIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round" strokeLinecap="round">
-      <Path d="M12 4c-3.3 0-5 2.5-5 5.7v3l-1.5 2.3h13L17 12.7v-3c0-3.2-1.7-5.7-5-5.7Z" />
-      <Path d="M10.3 17.5a1.8 1.8 0 0 0 3.4 0" />
-    </Svg>
-  );
-}
+// function BellIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round" strokeLinecap="round">
+//       <Path d="M12 4c-3.3 0-5 2.5-5 5.7v3l-1.5 2.3h13L17 12.7v-3c0-3.2-1.7-5.7-5-5.7Z" />
+//       <Path d="M10.3 17.5a1.8 1.8 0 0 0 3.4 0" />
+//     </Svg>
+//   );
+// }
 
-function CalcIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round">
-      <Path d="M6 8h12M6 12h12M6 16h12M9 6v12M15 6v12" />
-    </Svg>
-  );
-}
+// function CalcIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round">
+//       <Path d="M6 8h12M6 12h12M6 16h12M9 6v12M15 6v12" />
+//     </Svg>
+//   );
+// }
 
-function PinIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7}>
-      <Path d="M12 3c-3.8 0-6.3 2.8-6.3 6.3 0 4.6 6.3 11 6.3 11s6.3-6.4 6.3-11C18.3 5.8 15.8 3 12 3Z" />
-      <Circle cx={12} cy={9.2} r={2.3} fill={colors.primary} stroke="none" />
-    </Svg>
-  );
-}
+// function PinIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7}>
+//       <Path d="M12 3c-3.8 0-6.3 2.8-6.3 6.3 0 4.6 6.3 11 6.3 11s6.3-6.4 6.3-11C18.3 5.8 15.8 3 12 3Z" />
+//       <Circle cx={12} cy={9.2} r={2.3} fill={colors.primary} stroke="none" />
+//     </Svg>
+//   );
+// }
 
-function DownloadIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M12 4v9M8.8 9.8 12 13l3.2-3.2" />
-      <Path d="M5 15v2.5A1.5 1.5 0 0 0 6.5 19h11a1.5 1.5 0 0 0 1.5-1.5V15" />
-    </Svg>
-  );
-}
+// function DownloadIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+//       <Path d="M12 4v9M8.8 9.8 12 13l3.2-3.2" />
+//       <Path d="M5 15v2.5A1.5 1.5 0 0 0 6.5 19h11a1.5 1.5 0 0 0 1.5-1.5V15" />
+//     </Svg>
+//   );
+// }
 
-function OfflineIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M7 15a4 4 0 0 1 .6-8 5 5 0 0 1 9.6 1.2A3.4 3.4 0 0 1 17 15Z" />
-      <Path d="M9 18.5h6" />
-    </Svg>
-  );
-}
+// function OfflineIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+//       <Path d="M7 15a4 4 0 0 1 .6-8 5 5 0 0 1 9.6 1.2A3.4 3.4 0 0 1 17 15Z" />
+//       <Path d="M9 18.5h6" />
+//     </Svg>
+//   );
+// }
 
-function ShieldIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
-      <Path d="M12 3l7 2.6V11c0 4.6-3 7.9-7 9.4-4-1.5-7-4.8-7-9.4V5.6Z" />
-    </Svg>
-  );
-}
+// function ShieldIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
+//       <Path d="M12 3l7 2.6V11c0 4.6-3 7.9-7 9.4-4-1.5-7-4.8-7-9.4V5.6Z" />
+//     </Svg>
+//   );
+// }
 
-function InfoIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round">
-      <Circle cx={12} cy={12} r={8} />
-      <Path d="M12 11v5M12 7.8v.2" />
-    </Svg>
-  );
-}
+// function InfoIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round">
+//       <Circle cx={12} cy={12} r={8} />
+//       <Path d="M12 11v5M12 7.8v.2" />
+//     </Svg>
+//   );
+// }
 
-function StarIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
-      <Path d="M12 4l2.4 5 5.6.7-4.1 3.8 1.1 5.5-5-2.8-5 2.8 1.1-5.5L4 9.7 9.6 9Z" />
-    </Svg>
-  );
-}
+// function StarIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
+//       <Path d="M12 4l2.4 5 5.6.7-4.1 3.8 1.1 5.5-5-2.8-5 2.8 1.1-5.5L4 9.7 9.6 9Z" />
+//     </Svg>
+//   );
+// }
 
-function ShareIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M12 13V4M8.8 7.2 12 4l3.2 3.2" />
-      <Path d="M6 10H5.5A1.5 1.5 0 0 0 4 11.5v6A1.5 1.5 0 0 0 5.5 19h13a1.5 1.5 0 0 0 1.5-1.5v-6A1.5 1.5 0 0 0 18.5 10H18" />
-    </Svg>
-  );
-}
+// function ShareIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+//       <Path d="M12 13V4M8.8 7.2 12 4l3.2 3.2" />
+//       <Path d="M6 10H5.5A1.5 1.5 0 0 0 4 11.5v6A1.5 1.5 0 0 0 5.5 19h13a1.5 1.5 0 0 0 1.5-1.5v-6A1.5 1.5 0 0 0 18.5 10H18" />
+//     </Svg>
+//   );
+// }
 
-function ChevronRightIcon() {
-  return (
-    <Svg width={14} height={14} viewBox="0 0 20 20" fill="none">
-      <Path
-        d="M7.5 4.5 13 10l-5.5 5.5"
-        stroke={alpha(colors.secondary, 0.35)}
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-}
+// function ChevronRightIcon() {
+//   return (
+//     <Svg width={14} height={14} viewBox="0 0 20 20" fill="none">
+//       <Path
+//         d="M7.5 4.5 13 10l-5.5 5.5"
+//         stroke={alpha(colors.secondary, 0.35)}
+//         strokeWidth={2}
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+//     </Svg>
+//   );
+// }
 
 // ============================================
 // TOGGLE SWITCH
 // ============================================
 
-function ToggleSwitch({ value, onToggle }: { value: boolean; onToggle: () => void }) {
+function ToggleSwitch({
+  value,
+  onToggle,
+}: {
+  value: boolean;
+  onToggle: () => void;
+}) {
   return (
     <Pressable
       onPress={onToggle}
@@ -195,7 +213,7 @@ function SettingRow({
           <Text style={styles.rowValueText} numberOfLines={1}>
             {value}
           </Text>
-          {/* <ChevronRightIcon /> */}
+          {onPress && <ChevronRightIcon size={14} color={colors.textMuted} />}
         </View>
       ) : (
         // <ChevronRightIcon />
@@ -246,7 +264,9 @@ function SegmentedControl({
           accessibilityRole="radio"
           accessibilityState={{ checked: i === selected }}
         >
-          <Text style={[styles.segText, i === selected && styles.segTextActive]}>
+          <Text
+            style={[styles.segText, i === selected && styles.segTextActive]}
+          >
             {option}
           </Text>
         </Pressable>
@@ -263,6 +283,40 @@ export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const [prayerNotifications, setPrayerNotifications] = useState(true);
   const [theme, setTheme] = useState(2); // 0: Light, 1: Dark, 2: System
+  const [profileName, setProfileName] = useState('Abdullah Saeed');
+
+  // In the component:
+  const [currentLang, setCurrentLang] = useState("English");
+  const [arFont, setArFont] = useState<number>(FONT_SIZE_CONFIG.arabic.default);
+const [trFont, setTrFont] = useState<number>(getDefaultTranslationSize);
+
+  useFocusEffect(
+    useCallback(() => {
+      AsyncStorage.getItem("app_language").then((code) => {
+        const map: Record<string, string> = { en: "English", ur: "Urdu" };
+        setCurrentLang(code ? map[code] || code : "English");
+      });
+    }, []),
+  );
+
+  useFocusEffect(
+  useCallback(() => {
+    AsyncStorage.getItem('app_language').then((code) => {
+      const map: Record<string, string> = { en: 'English', ur: 'Urdu' };
+      setCurrentLang(code ? (map[code] || code) : 'English');
+    });
+    AsyncStorage.getItem('@deen_companion_profile').then((raw) => {
+      if (!raw) return;
+      try {
+        const p = JSON.parse(raw);
+        if (p.name) setProfileName(p.name);
+      } catch { /* keep default */ }
+    });
+    settingsService.getArabicFontSize().then(setArFont);
+    settingsService.getTranslationFontSize().then(setTrFont);
+  }, []),
+);
+
 
   return (
     <View style={styles.screen}>
@@ -270,79 +324,82 @@ export default function SettingsScreen() {
         style={styles.scrollView}
         contentContainerStyle={[
           styles.content,
-          { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 34 },
+          { paddingTop: 8, paddingBottom: insets.bottom + 34 },
         ]}
         showsVerticalScrollIndicator={false}
       >
         {/* Title */}
 
-{/* Header */}
-<View style={styles.header}>
-  <Pressable style={styles.backBtn} onPress={() => router.back()}>
-    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-      <Path
-        d="M12.5 4.5 7 10l5.5 5.5"
-        stroke={colors.secondary}
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  </Pressable>
-  <Text style={styles.title}>Settings</Text>
-  <View style={styles.headerSpacer} />
-</View>
+        {/* Header */}
+        <View style={styles.header}>
+          <Pressable style={styles.backBtn} onPress={() => router.back()}>
+            <BackIcon />
+          </Pressable>
+          <Text style={styles.title}>Settings</Text>
+          <View style={styles.headerSpacer} />
+        </View>
 
         {/* Profile card */}
-        {/* <View style={styles.profileCard}>
+        <View style={styles.profileCard}>
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>H</Text>
-          </View>
+  <Text style={styles.avatarText}>{profileName[0]}</Text>
+</View>
           <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>Hassan Ali</Text>
-            <Text style={styles.profileSub}>Member since 2026</Text>
+            <Text style={styles.profileName}>{profileName}</Text>
+            {/* <Text style={styles.profileSub}>Member since 2026</Text> */}
           </View>
           <Pressable
             style={({ pressed }) => [
               styles.editButton,
               pressed && styles.editButtonPressed,
             ]}
+            onPress={() => router.push("/edit-profile")}
           >
             <Text style={styles.editButtonText}>Edit Profile</Text>
           </Pressable>
-        </View> */}
+        </View>
 
         {/* Preferences */}
         <SectionHeader label="Preferences" />
         <SettingsCard>
-          <SettingRow icon={<GlobeIcon />} label="Language" value="English" />
           <SettingRow
-            icon={<BookIcon />}
+            icon={<GlobeIcon size={14} color={colors.primary} />}
+            label="Language"
+            value={currentLang}
+            onPress={() => {
+              router.push("/language-settings");
+            }}
+          />
+          <SettingRow
+            icon={<BookIcon size={14} color={colors.primary} />}
             label="Quran Translation"
             value="Sahih International"
           />
-          <SettingRow
-            icon={<AudioIcon />}
-            label="Quran Reciter"
-            value="Mishary Alafasy"
-          />
+
           <SettingRow
             icon={<ArabicFontIcon />}
             label="Arabic Font Size"
-            value="Medium (22)"
+            value={`${arFont}px`}
+            onPress={() => router.push("/font-settings")}
+          />
+          <SettingRow
+            icon={<ArabicFontIcon />}
+            label="Translation"
+            value={`${trFont}px`}
+            onPress={() => router.push("/font-settings")}
           />
         </SettingsCard>
 
-       {/* Prayer */}
-<SectionHeader label="Prayer" />
-<SettingsCard>
-  {/* <ToggleRow
+        {/* Prayer */}
+        <SectionHeader label="Prayer" />
+        <SettingsCard>
+          {/* <ToggleRow
     icon={<BellIcon />}
     label="Prayer Notifications"
     value={prayerNotifications}
     onToggle={() => setPrayerNotifications((v) => !v)}
-  /> */}
-  {/* <SettingRow
+  />  */}
+          {/* <SettingRow
     icon={<CalcIcon />}
     label="Calculation Method"
     value="Karachi"
@@ -352,25 +409,25 @@ export default function SettingsScreen() {
     label="Location"
     value="Wah, Pakistan"
   /> */}
- <Pressable
-  style={({ pressed }) => [
-    styles.prayerSettingsBtn,
-    pressed && styles.prayerSettingsBtnPressed,
-  ]}
-  onPress={() => router.push('/prayer-settings')}
->
-  <Text style={styles.prayerSettingsBtnText}>Prayer Settings</Text>
-  <Svg width={14} height={14} viewBox="0 0 20 20" fill="none">
-      <Path
-        d="M7.5 4.5 13 10l-5.5 5.5"
-        stroke={colors.surface}
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-</Pressable>
-</SettingsCard>
+          <Pressable
+            style={({ pressed }) => [
+              styles.prayerSettingsBtn,
+              pressed && styles.prayerSettingsBtnPressed,
+            ]}
+            onPress={() => router.push("/prayer-settings")}
+          >
+            <Text style={styles.prayerSettingsBtnText}>Prayer Settings</Text>
+            <Svg width={14} height={14} viewBox="0 0 20 20" fill="none">
+              <Path
+                d="M7.5 4.5 13 10l-5.5 5.5"
+                stroke={colors.surface}
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </Svg>
+          </Pressable>
+        </SettingsCard>
 
         {/* App */}
         <SectionHeader label="App" />
@@ -386,7 +443,12 @@ export default function SettingsScreen() {
             value="210 MB"
           /> */}
           {/* <SettingRow icon={<ShieldIcon />} label="Privacy" /> */}
-          <SettingRow icon={<InfoIcon />} label="About" value="v1.0.0"  />
+          <SettingRow
+            icon={<InfoIcon />}
+            label="About"
+            value="v1.0.0"
+            onPress={() => router.push("/about")}
+          />
           {/* <SettingRow icon={<StarIcon />} label="Rate App" /> */}
           {/* <SettingRow icon={<ShareIcon />} label="Share App" /> */}
         </SettingsCard>
@@ -423,38 +485,36 @@ const styles = StyleSheet.create({
     gap: 0,
   },
 
-  
-
   // Header
-header: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  gap: 6,
-  paddingBottom: 4,
-},
-backBtn: {
-  width: 44,
-  height: 44,
-  borderRadius: 14,
-  alignItems: 'center',
-  justifyContent: 'center',
-},
-title: {
-  fontFamily: 'Poppins',
-  fontWeight: '600',
-  fontSize: 26,
-  letterSpacing: -0.01,
-  color: colors.secondary,
-},
-headerSpacer: {
-  width: 44,
-},
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingBottom: 4,
+  },
+  backBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontFamily: "Poppins",
+    fontWeight: "600",
+    fontSize: 20,
+    letterSpacing: -0.01,
+    color: colors.secondary,
+  },
+  headerSpacer: {
+    width: 44,
+  },
 
   // Profile card
   profileCard: {
     marginTop: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 12,
     backgroundColor: colors.surface,
     borderWidth: 1,
@@ -476,12 +536,12 @@ headerSpacer: {
     backgroundColor: alpha(colors.primary, 0.1),
     borderWidth: 1,
     borderColor: alpha(colors.primary, 0.25),
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   avatarText: {
     color: colors.primary,
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 18,
   },
   profileInfo: {
@@ -490,7 +550,7 @@ headerSpacer: {
   },
   profileName: {
     fontSize: 15.5,
-    fontWeight: '600',
+    fontWeight: "600",
     color: colors.secondary,
   },
   profileSub: {
@@ -509,7 +569,7 @@ headerSpacer: {
   },
   editButtonText: {
     color: colors.primary,
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 12,
   },
 
@@ -520,9 +580,9 @@ headerSpacer: {
     marginBottom: 8,
     fontSize: 10.5,
     letterSpacing: 0.12,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
     color: colors.textMuted,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 
   // Card
@@ -531,7 +591,7 @@ headerSpacer: {
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: 16,
-    overflow: 'hidden',
+    overflow: "hidden",
     shadowColor: alpha(colors.secondary, 0.04),
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
@@ -541,9 +601,9 @@ headerSpacer: {
 
   // Row
   row: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
     gap: 12,
     paddingVertical: 12,
     paddingHorizontal: 16,
@@ -553,24 +613,24 @@ headerSpacer: {
     height: 30,
     borderRadius: 9,
     backgroundColor: alpha(colors.primary, 0.08),
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     flexShrink: 0,
   },
   rowLabel: {
     flex: 1,
     fontSize: 14.5,
-    fontWeight: '500',
+    fontWeight: "500",
     color: colors.secondary,
   },
   rowValue: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
   rowValueText: {
     fontSize: 13,
-    color: '#52616F',
+    color: "#52616F",
   },
 
   // Divider between rows
@@ -581,23 +641,23 @@ headerSpacer: {
     width: 46,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#D5DBE1',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    backgroundColor: "#D5DBE1",
+    alignItems: "center",
+    justifyContent: "flex-start",
     paddingStart: 3,
     flexShrink: 0,
   },
   switchOn: {
     backgroundColor: colors.primary,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     paddingEnd: 3,
   },
   switchKnob: {
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: '#FFFFFF',
-    shadowColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: "#FFFFFF",
+    shadowColor: "rgba(0,0,0,0.2)",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 1,
     shadowRadius: 4,
@@ -613,15 +673,15 @@ headerSpacer: {
     height: 46,
     backgroundColor: alpha(colors.secondary, 0.06),
     borderRadius: 14,
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 4,
     gap: 4,
   },
   segButton: {
     flex: 1,
     borderRadius: 11,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   segButtonActive: {
     backgroundColor: colors.primary,
@@ -632,18 +692,18 @@ headerSpacer: {
     elevation: 4,
   },
   segText: {
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 13.5,
-    color: '#52616F',
+    color: "#52616F",
   },
   segTextActive: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
 
   // Footer
   footer: {
     marginTop: 18,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 11,
     color: colors.textDisabled,
     paddingBottom: 4,
@@ -652,30 +712,30 @@ headerSpacer: {
   //prayer
 
   prayerSettingsBtn: {
-  marginHorizontal: 12,
-  marginTop: 10,
-  marginBottom: 12,
-  height: 48,
-  borderRadius: 12,
-  backgroundColor: colors.primary,
-  flexDirection: 'row',
-  gap: 10,
-  alignItems: 'center',
-  justifyContent: 'center',
-  shadowColor: alpha(colors.primary, 0.28),
-  shadowOffset: { width: 0, height: 8 },
-  shadowOpacity: 1,
-  shadowRadius: 20,
-  elevation: 6,
-},
-prayerSettingsBtnPressed: {
-  transform: [{ scale: 0.98 }],
-  opacity: 0.9,
-},
-prayerSettingsBtnText: {
-  fontFamily: 'Poppins',
-  fontWeight: '600',
-  fontSize: 14,
-  color: '#FFFFFF',
-},
+    marginHorizontal: 12,
+    marginTop: 10,
+    marginBottom: 12,
+    height: 48,
+    borderRadius: 12,
+    backgroundColor: colors.primary,
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: alpha(colors.primary, 0.28),
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 1,
+    shadowRadius: 20,
+    elevation: 6,
+  },
+  prayerSettingsBtnPressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.9,
+  },
+  prayerSettingsBtnText: {
+    fontFamily: "Poppins",
+    fontWeight: "600",
+    fontSize: 14,
+    color: "#FFFFFF",
+  },
 });

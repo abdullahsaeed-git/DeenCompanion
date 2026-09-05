@@ -12,104 +12,105 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import Svg, { Path, Rect, Circle } from 'react-native-svg';
 import { colors, alpha } from '../constants/theme';
+import { CalendarIcon, DuaIcon, HadithIcon, HijriIcon, LibraryIcon, MosqueIcon, NamesIcon, QuranIcon, SearchIcon, TasbihIcon, ZakatIcon } from '@/components/Icons';
 
 // ============================================
 // ICONS
 // ============================================
 
-function MosqueIcon({ size = 22 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M6 20v-6c0-3 2.6-4.6 6-7 3.4 2.4 6 4 6 7v6" />
-      <Path d="M12 7V4.5" />
-      <Path d="M4 20h16" />
-      <Path d="M10 20v-3c0-1 .9-1.6 2-2.4 1.1.8 2 1.4 2 2.4v3" />
-    </Svg>
-  );
-}
+// function MosqueIcon({ size = 22 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+//       <Path d="M6 20v-6c0-3 2.6-4.6 6-7 3.4 2.4 6 4 6 7v6" />
+//       <Path d="M12 7V4.5" />
+//       <Path d="M4 20h16" />
+//       <Path d="M10 20v-3c0-1 .9-1.6 2-2.4 1.1.8 2 1.4 2 2.4v3" />
+//     </Svg>
+//   );
+// }
 
-function CalendarIcon({ size = 22 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
-      <Rect x={4} y={5.5} width={16} height={14.5} rx={2.5} />
-      <Path d="M4 10h16" />
-      <Path d="M8.5 3.5v3.5" />
-      <Path d="M15.5 3.5v3.5" />
-      <Path d="M8.5 14h2" />
-      <Path d="M13.5 14h2" />
-    </Svg>
-  );
-}
+// function CalendarIcon({ size = 22 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+//       <Rect x={4} y={5.5} width={16} height={14.5} rx={2.5} />
+//       <Path d="M4 10h16" />
+//       <Path d="M8.5 3.5v3.5" />
+//       <Path d="M15.5 3.5v3.5" />
+//       <Path d="M8.5 14h2" />
+//       <Path d="M13.5 14h2" />
+//     </Svg>
+//   );
+// }
 
-function QiblaIcon({ size = 22 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
-      <Circle cx={12} cy={12} r={8} />
-      <Path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5Z" />
-    </Svg>
-  );
-}
+// function QiblaIcon({ size = 22 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
+//       <Circle cx={12} cy={12} r={8} />
+//       <Path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5Z" />
+//     </Svg>
+//   );
+// }
 
-function TasbihIcon({ size = 22 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Circle cx={12} cy={4.5} r={1.6} fill={colors.primary} />
-      <Circle cx={17} cy={6.5} r={1.6} fill={colors.primary} />
-      <Circle cx={19} cy={11.5} r={1.6} fill={colors.primary} />
-      <Circle cx={7} cy={6.5} r={1.6} fill={colors.primary} />
-      <Circle cx={5} cy={11.5} r={1.6} fill={colors.primary} />
-      <Circle cx={8} cy={15.5} r={1.6} fill={colors.primary} />
-      <Circle cx={16} cy={15.5} r={1.6} fill={colors.primary} />
-      <Circle cx={12} cy={18.5} r={2} fill={colors.accent} />
-      <Path d="M12 20.5v2" stroke={colors.accent} strokeWidth={1.6} strokeLinecap="round" />
-    </Svg>
-  );
-}
+// function TasbihIcon({ size = 22 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+//       <Circle cx={12} cy={4.5} r={1.6} fill={colors.primary} />
+//       <Circle cx={17} cy={6.5} r={1.6} fill={colors.primary} />
+//       <Circle cx={19} cy={11.5} r={1.6} fill={colors.primary} />
+//       <Circle cx={7} cy={6.5} r={1.6} fill={colors.primary} />
+//       <Circle cx={5} cy={11.5} r={1.6} fill={colors.primary} />
+//       <Circle cx={8} cy={15.5} r={1.6} fill={colors.primary} />
+//       <Circle cx={16} cy={15.5} r={1.6} fill={colors.primary} />
+//       <Circle cx={12} cy={18.5} r={2} fill={colors.accent} />
+//       <Path d="M12 20.5v2" stroke={colors.accent} strokeWidth={1.6} strokeLinecap="round" />
+//     </Svg>
+//   );
+// }
 
-function HijriIcon({ size = 22 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round" strokeLinecap="round">
-      <Path d="M16.5 5.2a8 8 0 1 0 4.8 13.1A9 9 0 0 1 16.5 5.2Z" />
-      <Path d="M15 9l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1Z" />
-    </Svg>
-  );
-}
+// function HijriIcon({ size = 22 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round" strokeLinecap="round">
+//       <Path d="M16.5 5.2a8 8 0 1 0 4.8 13.1A9 9 0 0 1 16.5 5.2Z" />
+//       <Path d="M15 9l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1Z" />
+//     </Svg>
+//   );
+// }
 
-function DuaIcon({ size = 22 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
-      <Path d="M12 19s-7-4.6-7-9.5C5 6.6 7 5 9.2 5c1.3 0 2.3.6 2.8 1.6C12.5 5.6 13.5 5 14.8 5 17 5 19 6.6 19 9.5c0 4.9-7 9.5-7 9.5Z" />
-    </Svg>
-  );
-}
+// function DuaIcon({ size = 22 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
+//       <Path d="M12 19s-7-4.6-7-9.5C5 6.6 7 5 9.2 5c1.3 0 2.3.6 2.8 1.6C12.5 5.6 13.5 5 14.8 5 17 5 19 6.6 19 9.5c0 4.9-7 9.5-7 9.5Z" />
+//     </Svg>
+//   );
+// }
 
-function ZakatIcon({ size = 22 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round">
-      <Circle cx={9} cy={9} r={5} />
-      <Circle cx={15} cy={15} r={5} />
-      <Path d="M7.5 9h3" />
-      <Path d="M13.5 15h3" />
-    </Svg>
-  );
-}
+// function ZakatIcon({ size = 22 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round">
+//       <Circle cx={9} cy={9} r={5} />
+//       <Circle cx={15} cy={15} r={5} />
+//       <Path d="M7.5 9h3" />
+//       <Path d="M13.5 15h3" />
+//     </Svg>
+//   );
+// }
 
-function VideoIcon({ size = 22 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
-      <Rect x={3.5} y={6} width={17} height={12} rx={3} />
-      <Path d="M10.5 9.5v5l4.5-2.5Z" fill={colors.primary} stroke="none" />
-    </Svg>
-  );
-}
+// function VideoIcon({ size = 22 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
+//       <Rect x={3.5} y={6} width={17} height={12} rx={3} />
+//       <Path d="M10.5 9.5v5l4.5-2.5Z" fill={colors.primary} stroke="none" />
+//     </Svg>
+//   );
+// }
 
-function NamesIcon({ size = 22 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
-      <Path d="M12 3.5l2.2 4.9 5.3.6-3.9 3.6 1 5.2-4.6-2.6-4.6 2.6 1-5.2-3.9-3.6 5.3-.6Z" />
-    </Svg>
-  );
-}
+// function NamesIcon({ size = 22 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
+//       <Path d="M12 3.5l2.2 4.9 5.3.6-3.9 3.6 1 5.2-4.6-2.6-4.6 2.6 1-5.2-3.9-3.6 5.3-.6Z" />
+//     </Svg>
+//   );
+// }
 
 // ============================================
 // DATA
@@ -125,11 +126,14 @@ interface FeatureItem {
 
 const FEATURES: FeatureItem[] = [
   { id: 'prayer-times', title: 'Prayer Times', subtitle: 'Daily salah', icon: MosqueIcon, route: '/(tabs)/prayer' },
+  { id: 'search', title: 'Search', subtitle: 'Discover More', icon: SearchIcon, route: '/search' },
   { id: 'prayer-calendar', title: 'Prayer Calendar', subtitle: 'Monthly view', icon: CalendarIcon, route: '/prayer-calendar' },
-  { id: 'qibla', title: 'Qibla Finder', subtitle: 'Face Makkah', icon: QiblaIcon, route: 'qibla-compass' },
   { id: 'tasbih', title: 'Tasbih', subtitle: 'Dhikr counter', icon: TasbihIcon, route: '/tasbih' },
  { id: 'hijri', title: 'Islamic Calendar', subtitle: 'Hijri dates', icon: HijriIcon, route: '/islamic-calendar' },
   { id: 'duas', title: 'Duas', subtitle: 'Supplications', icon: DuaIcon, route: '/dua-collection' },
+  { id: 'library', title: 'Library', subtitle: 'Islamic Collection', icon: LibraryIcon, route: '/(tabs)/library' },
+  { id: 'quran', title: 'Quran', subtitle: 'Learn Quran', icon: QuranIcon, route: '/(tabs)/quran' },
+  { id: 'hadith', title: 'Hadith', subtitle: 'Authentic Collections', icon: HadithIcon, route: '/(tabs)/hadith' },
  { id: 'zakat', title: 'Zakat Calculator', subtitle: '2.5% due', icon: ZakatIcon, route: '/zakat-calculator' },
 //   { id: 'videos', title: 'Videos', subtitle: 'Lessons', icon: VideoIcon },
   { id: 'names', title: '99 Names', subtitle: 'Asma ul-Husna', icon: NamesIcon, route: '/names-of-allah'  },
@@ -154,7 +158,7 @@ export default function FeaturesScreen() {
         style={styles.scrollView}
         contentContainerStyle={[
           styles.content,
-          { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 34 },
+          { paddingTop: 8, paddingBottom: insets.bottom + 34 },
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -185,7 +189,7 @@ export default function FeaturesScreen() {
                 onPress={() => handlePress(feature)}
               >
                 <View style={styles.iconContainer}>
-                  <Icon />
+                  <Icon  />
                 </View>
                 <Text style={styles.tileTitle} numberOfLines={1}>
                   {feature.title}
@@ -239,12 +243,12 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Poppins',
     fontWeight: '600',
-    fontSize: 26,
+    fontSize: 20,
     letterSpacing: -0.01,
     color: colors.secondary,
   },
   subtitle: {
-    marginTop: 3,
+    // marginTop: 3,
     fontSize: 13,
     color: colors.textSecondary,
   },

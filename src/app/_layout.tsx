@@ -9,8 +9,7 @@
  * 5. "hadith-book"  — Hadith collection detail (paginated hadiths)
  * 6. "hadith-reader" — Single hadith detail
  * 7. "prayer-calendar" — Monthly prayer calendar
- * 8. "qibla-compass"   — Qibla direction compass
- * 9. "prayer-settings" — Prayer configuration settings
+ * 8. "prayer-settings" — Prayer configuration settings
  *
  * Fonts are loaded here. The native splash stays visible until ready.
  */
@@ -34,6 +33,10 @@ import {
   Amiri_400Regular,
 } from '@expo-google-fonts/amiri';
 import { colors } from '../constants/theme';
+import  {StatusBar} from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { initLanguage } from '@/services/languageService';
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -43,17 +46,22 @@ export default function RootLayout() {
     'Inter-Medium': Inter_500Medium,
     'Inter-SemiBold': Inter_600SemiBold,
   });
-
+  
   const [poppinsLoaded] = usePoppinsFonts({
     'Poppins': Poppins_600SemiBold,
     'Poppins-Medium': Poppins_500Medium,
   });
-
+  
   const [amiriLoaded] = useAmiriFonts({
     'Amiri': Amiri_400Regular,
   });
-
+  
   const fontsLoaded = interLoaded && poppinsLoaded && amiriLoaded;
+  const insets = useSafeAreaInsets();
+
+   useEffect(() => {
+    initLanguage(); // reads 'app_language' from AsyncStorage into memory
+  }, []);
 
   useEffect(() => {
     if (fontsLoaded) {
@@ -65,11 +73,21 @@ export default function RootLayout() {
     return null;
   }
 
+// Add this inside your root _layout.tsx, before the return:
+// StatusBar.setBackgroundColor('#F8F6F0');
+// StatusBar.setBarStyle('dark-content');
   return (
+<>
+{/* <StatusBar barStyle="dark-content" backgroundColor="#F8F6F0" /> */}
+{/* <NavigationBar
+        backgroundColor="#111827"
+        style="light"
+      /> */}
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: colors.background },
+        contentStyle: { backgroundColor: colors.background, paddingTop: insets.top, paddingBottom: 0 },
+        
       }}
       initialRouteName="splash"
     >
@@ -81,7 +99,7 @@ export default function RootLayout() {
       <Stack.Screen name="hadith-chapter" />
       <Stack.Screen name="hadith-reader" />
       <Stack.Screen name="prayer-calendar" />
-      <Stack.Screen name="qibla-compass" />
+      {/* <Stack.Screen name="qibla-compass" /> */}
       <Stack.Screen name="prayer-settings" />
       <Stack.Screen name="features" />
       <Stack.Screen name="dua-collection" />
@@ -96,6 +114,13 @@ export default function RootLayout() {
       <Stack.Screen name="notifications" />
       <Stack.Screen name="settings" />
       <Stack.Screen name="about" />
+      <Stack.Screen name="./search" />
+      <Stack.Screen name="search/quran" />
+      <Stack.Screen name="search/hadith" />
+      <Stack.Screen name="language-settings" />
+      <Stack.Screen name="font-settings" />
+
     </Stack>
+        </>
   );
 }

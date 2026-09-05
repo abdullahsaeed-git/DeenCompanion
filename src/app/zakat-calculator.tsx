@@ -10,20 +10,21 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { colors, alpha } from '../constants/theme';
+import { BackIcon } from '@/components/Icons';
 
-function BackIcon() {
-  return (
-    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-      <Path
-        d="M12.5 4.5 7 10l5.5 5.5"
-        stroke={colors.secondary}
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-}
+// function BackIcon() {
+//   return (
+//     <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
+//       <Path
+//         d="M12.5 4.5 7 10l5.5 5.5"
+//         stroke={colors.secondary}
+//         strokeWidth={2}
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+//     </Svg>
+//   );
+// }
 
 function ZakatIconLarge({ size = 64 }: { size?: number }) {
   return (
@@ -41,7 +42,7 @@ export default function ZakatCalculatorScreen() {
 
   return (
     <View style={styles.screen}>
-      <View style={[styles.content, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 34 }]}>
+      <View style={[styles.content, { paddingTop:  8, paddingBottom: insets.bottom + 34 }]}>
         {/* Header */}
         <View style={styles.header}>
           <Pressable style={styles.backBtn} onPress={() => router.back()}>
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Poppins',
     fontWeight: '600',
-    fontSize: 18,
+    fontSize: 20,
     color: colors.secondary,
   },
   spacer: { width: 44 },

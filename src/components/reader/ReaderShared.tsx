@@ -277,6 +277,7 @@ export const AyahItem = React.memo(function AyahItem({
   showArabic,
   arabicFontSize,
   translationFontSize,
+  language,
 }: {
   ayah: Ayah;
   isSelected: boolean;
@@ -287,6 +288,7 @@ export const AyahItem = React.memo(function AyahItem({
   showArabic: boolean;
   arabicFontSize: number;
   translationFontSize: number;
+  language?: string | null;
 }) {
   return (
     
@@ -296,13 +298,13 @@ export const AyahItem = React.memo(function AyahItem({
       )}
       <View style={[styles.ayahContainer, isSelected && styles.ayahContainerSelected]}>
         {showArabic && ayah.text && (
-          <Text style={[styles.quranText, { fontSize: arabicFontSize, lineHeight: arabicFontSize * 2.4 }]}>
+          <Text style={[styles.quranText, { fontSize: arabicFontSize , lineHeight: arabicFontSize * 2.4,  }]}>
             {cleanText(ayah.text, ayah.numberInSurah)} <Text style={[styles.ayahBadge,{ fontSize: arabicFontSize *0.5 }]}>﴿ {ayah.numberInSurah} ﴾</Text>
           </Text>
         )}
 
         {showTranslation && ayah.translation && (
-          <Text style={[styles.translation, { fontSize: translationFontSize, lineHeight: translationFontSize * 1.7 }]}>
+          <Text style={[styles.translation, { fontSize: translationFontSize, lineHeight: translationFontSize * 1.7, textAlign: language === 'ur' ? 'right' : 'left' }]}>
             {ayah.translation}
           </Text>
         )}

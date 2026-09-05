@@ -158,7 +158,7 @@ export function useReaderData(): UseReaderDataReturn {
         .then((data) => {
           if (!cancelled) {
             setSurah(data);
-            setSelectedAyah(1);
+            // setSelectedAyah(1);
             setReaderMode(initialMode);
             setLoading(false);
           }

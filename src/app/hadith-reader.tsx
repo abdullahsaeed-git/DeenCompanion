@@ -25,19 +25,21 @@ import { bookmarkService } from '../services/bookmarkService';
 import { GradeBadge } from '../components/hadith/GradeBadge';
 import { HadithNumberBadge } from '../components/hadith/HadithNumberBadge';
 import { HadithSettingsSheet } from '../components/hadith/HadithSettingsSheet';
+import { SettingsIcon } from '@/components/Icons';
+import { useFontSizes } from '@/hooks/useFontSizes';
 
 // ============================================
 // ICONS
 // ============================================
 
-function SettingsIcon({ size = 19 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.secondary} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-      <Path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
-    </Svg>
-  );
-}
+// function SettingsIcon({ size = 19 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.secondary} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+//       <Path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+//       <Path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
+//     </Svg>
+//   );
+// }
 
 function GoldOrnament() {
   return (
@@ -66,8 +68,7 @@ export default function HadithReaderScreen() {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [copied, setCopied] = useState(false);
   const [settingsVisible, setSettingsVisible] = useState(false);
-  const [arabicFontSize, setArabicFontSize] = useState(20);
-  const [translationFontSize, setTranslationFontSize] = useState(14);
+   const { arabic: arabicFontSize, translation: translationFontSize, setArabicSize, setTranslationSize } = useFontSizes();
 
   const isAtStart = hadithNum <= 1;
   const isAtEnd = lastHadithNumber !== null && hadithNum >= lastHadithNumber;
@@ -199,7 +200,7 @@ async function handleCopy() {
   return (
     <View style={styles.screen}>
       {/* Sticky header */}
-      <View style={[styles.stickyHeader, { paddingTop: insets.top + 8 }]}>
+      <View style={[styles.stickyHeader, { paddingTop:  8 }]}>
         <Pressable style={styles.headerBtn} onPress={() => router.back()}>
           <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
             <Path
@@ -230,7 +231,7 @@ async function handleCopy() {
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={{
-          paddingTop: insets.top + 70,
+          paddingTop:  70,
           paddingBottom: insets.bottom + 96,
           paddingHorizontal: 20,
         }}
@@ -256,7 +257,7 @@ async function handleCopy() {
         </View>
 
         {hadith.arabicText ? (
-          <Text style={[styles.arabicText, { fontSize: arabicFontSize, lineHeight: arabicFontSize * 2.05 }]}>
+          <Text style={[styles.arabicText, { fontSize: arabicFontSize, lineHeight: arabicFontSize * 2.0 , textAlign: "justify"}]}>
             {hadith.arabicText}
           </Text>
         ) : (
@@ -267,7 +268,7 @@ async function handleCopy() {
 
         <Text style={styles.translationLabel}>Translation</Text>
         {hadith.translation ? (
-          <Text style={[styles.translation, { fontSize: translationFontSize, lineHeight: translationFontSize * 1.7 }]}>
+          <Text style={[styles.translation, { fontSize: translationFontSize, lineHeight: translationFontSize * 1.7,  textAlign: "justify" }]}>
             &ldquo;{hadith.translation}&rdquo;
           </Text>
         ) : (
@@ -323,13 +324,13 @@ async function handleCopy() {
       </View>
 
       {/* Settings sheet */}
-      <HadithSettingsSheet
+            <HadithSettingsSheet
         visible={settingsVisible}
         onClose={() => setSettingsVisible(false)}
         arabicFontSize={arabicFontSize}
-        setArabicFontSize={setArabicFontSize}
+        setArabicFontSize={setArabicSize}
         translationFontSize={translationFontSize}
-        setTranslationFontSize={setTranslationFontSize}
+        setTranslationFontSize={setTranslationSize}
         isBookmarked={isBookmarked}
         onCopy={handleCopy}
         copied={copied}

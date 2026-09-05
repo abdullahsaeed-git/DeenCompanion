@@ -55,7 +55,8 @@ export function ContinueReading({
   function handleContinue() {
     router.push({
       pathname: '/quran-reader',
-      params: { surahNumber: String(surahNumber), mode: 'ayah' },
+      params: { surahNumber: String(surahNumber), mode: 'ayah', scrollToAyah: String(ayahNumber)
+       },
     });
   }
 

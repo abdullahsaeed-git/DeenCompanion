@@ -53,3 +53,16 @@ export interface Hadith {
 }
 
 export type HadithDisplayMode = 'arabic' | 'both' | 'translation';
+
+/** Search result from Supabase Edge Function */
+export interface HadithSearchResult {
+  collection: string;
+  book_number: string;
+  hadith_number: string;
+  en: string | null;
+  ar: string | null;
+  ur: string | null;
+  similarity_score: number;
+  keyword_score: number;
+  hybrid_score: number;
+}

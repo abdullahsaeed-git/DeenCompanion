@@ -18,6 +18,7 @@ import Svg, { Path } from 'react-native-svg';
 import { colors, alpha } from '../../constants/theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DuaBookmark, bookmarkService } from '../../services/bookmarkService';
+import { BackIcon, DeleteIcon, DuaIcon } from '@/components/Icons';
 
 // ============================================
 // HELPERS
@@ -63,15 +64,8 @@ function BookmarkCard({
           style={({ pressed }) => [styles.deleteBtn, pressed && styles.deleteBtnPressed]}
           onPress={onDelete}
         >
-          <Svg width={16} height={16} viewBox="0 0 20 20" fill="none">
-            <Path
-              d="M6 5h8M8 5V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1M5 5l.8 12a1 1 0 0 0 1 .9h6.4a1 1 0 0 0 1-.9L15 5"
-              stroke={colors.error}
-              strokeWidth={1.6}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </Svg>
+     
+          <DeleteIcon size={16} color={colors.error}/>
         </Pressable>
       </View>
 
@@ -120,19 +114,12 @@ export default function DuasBookmarksScreen() {
 
   return (
     <View style={styles.screen}>
-      <View style={[styles.content, { paddingTop: insets.top + 16 }]}>
+      <View style={[styles.content, { paddingTop:  16 }]}>
         {/* Header */}
         <View style={styles.header}>
           <Pressable style={styles.headerBtn} onPress={() => router.back()}>
-            <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <Path
-                d="M12.5 4.5 7 10l5.5 5.5"
-                stroke={colors.secondary}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </Svg>
+           
+            <BackIcon/>
           </Pressable>
 
           <View style={styles.headerTitleContainer}>
@@ -155,14 +142,8 @@ export default function DuasBookmarksScreen() {
         ) : bookmarks.length === 0 ? (
           <View style={styles.emptyContainer}>
             <View style={styles.emptyIcon}>
-              <Svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-                <Path
-                  d="M12 19s-7-4.6-7-9.5C5 6.6 7 5 9.2 5c1.3 0 2.3.6 2.8 1.6C12.5 5.6 13.5 5 14.8 5 17 5 19 6.6 19 9.5c0 4.9-7 9.5-7 9.5Z"
-                  stroke={colors.textMuted}
-                  strokeWidth="1.5"
-                  strokeLinejoin="round"
-                />
-              </Svg>
+             
+              <DuaIcon color={colors.textMuted} size={40}/>
             </View>
             <Text style={styles.emptyTitle}>No bookmarks yet</Text>
             <Text style={styles.emptySubtitle}>
@@ -174,7 +155,7 @@ export default function DuasBookmarksScreen() {
             data={bookmarks}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: insets.bottom + 20, paddingTop: insets.top +20 }}
+            contentContainerStyle={{ paddingBottom: insets.bottom + 20, paddingTop: 20 }}
             ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
             renderItem={({ item }) => (
               <BookmarkCard
@@ -225,7 +206,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontFamily: 'Poppins',
     fontWeight: '600',
-    fontSize: 24,
+    fontSize: 20,
     letterSpacing: -0.01,
     color: colors.secondary,
   },

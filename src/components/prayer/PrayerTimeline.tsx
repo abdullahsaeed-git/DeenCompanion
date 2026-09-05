@@ -95,13 +95,13 @@ function PrayerRow({ prayer, state, onBellPress }: PrayerRowProps) {
       </Text>
 
       {/* Bell or spacer */}
-      {prayer.isSunrise ? (
+      {/* {prayer.isSunrise ? (
         <View style={styles.spacer} />
       ) : (
         <Pressable style={styles.bellButton} onPress={onBellPress}>
           {prayer.notificationOn ? <BellOn /> : <BellOff />}
         </Pressable>
-      )}
+      )} */}
     </View>
   );
 }
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   nextChipText: { fontSize: 9.5, fontWeight: '700', letterSpacing: 0.08, color: '#FFFFFF' },
-  time: { fontSize: 13.5, fontWeight: '600', color: '#33475C' },
+  time: { fontSize: 13.5, fontWeight: '600', color: '#33475C', paddingHorizontal: 10 },
   bellButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
   spacer: { width: 40 },
 });

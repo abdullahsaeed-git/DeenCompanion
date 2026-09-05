@@ -14,10 +14,12 @@ interface JuzRowProps {
   number: number;
   name: string;
   meta: string;
+  arabicName: string;
+  englishName: string;
   onPress?: () => void;
 }
 
-export function JuzRow({ number, name, meta, onPress }: JuzRowProps) {
+export function JuzRow({ number, name, meta, arabicName, englishName, onPress }: JuzRowProps) {
   return (
     <Pressable
       style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
@@ -27,7 +29,8 @@ export function JuzRow({ number, name, meta, onPress }: JuzRowProps) {
 
       <View style={styles.mid}>
         <Text style={styles.name} numberOfLines={1}>
-          {name}
+           {/* {englishName} */}
+           {name}
         </Text>
         <Text style={styles.meta} numberOfLines={1}>
           {meta}
@@ -35,7 +38,8 @@ export function JuzRow({ number, name, meta, onPress }: JuzRowProps) {
       </View>
 
       <Text style={styles.arabic} numberOfLines={1}>
-        جزء
+        {/* جزء */}
+        {arabicName}
       </Text>
 
       <Svg width={16} height={16} viewBox="0 0 20 20" fill="none">

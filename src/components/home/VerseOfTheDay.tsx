@@ -5,10 +5,13 @@
  */
 
 import { View, Text, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
 import { colors } from '../../constants/theme';
 import { ArrowRightIcon } from './QuickActions';
+import { FONT_SIZE_CONFIG, getDefaultTranslationSize, settingsService } from '@/services/settingsService';
+import { useCallback, useState } from 'react';
+import { getLanguage } from '@/services/languageService';
 
 interface VerseOfTheDayProps {
   arabic: string;
@@ -50,13 +53,33 @@ export function VerseOfTheDay({
   onRefresh,
   refreshing,
 }: VerseOfTheDayProps) {
+
+   const [arFont, setArFont] = useState<number>(FONT_SIZE_CONFIG.arabic.default);
+  const [trFont, setTrFont] = useState<number>(getDefaultTranslationSize);
+  
+
   function handleReadMore() {
     router.push({
-      pathname: '/(tabs)/quran',
-      // pathname: '/quran-reader',
-      // params: { surahNumber: String(surahNumber), mode: 'ayah' },
+      // pathname: '/(tabs)/quran',
+      pathname: '/quran-reader',
+      params: { surahNumber: String(surahNumber), mode: 'ayah', scrollToAyah: String(ayahNumber) },
     });
   }
+
+  const cleanedText = (text: string) => {
+  if (typeof text !== 'string') return '';
+  return text.replace(/\n+$/, '');
+};
+
+
+  useFocusEffect(
+  useCallback(() => {
+    settingsService.getArabicFontSize().then(setArFont);
+    settingsService.getTranslationFontSize().then(setTrFont);
+  
+  }, []),
+);
+
 
   return (
     <View style={styles.card}>
@@ -79,9 +102,12 @@ export function VerseOfTheDay({
           )}
         </View>
       </View>
-
-      <Text style={styles.arabic}>{arabic}</Text>
-      <Text style={styles.translation}>"{translation}"</Text>
+      <Text style={[styles.arabic, { fontSize: arFont, lineHeight: arFont * 2 }]} numberOfLines={4} ellipsizeMode="tail">
+        
+        {cleanedText(arabic)}
+        
+        </Text>
+      <Text style={[styles.translation, {fontSize: trFont, lineHeight: arFont * 1.3, textAlign: "center"}]}>"{translation}"</Text>
       <Text style={styles.reference}>{reference}</Text>
 
       <Pressable
@@ -166,7 +192,7 @@ const styles = StyleSheet.create({
     color: '#102A43',
   },
   translation: {
-    marginTop: 6,
+    marginTop: 12,
     fontSize: 13,
     lineHeight: 13 * 1.6,
     color: '#52616F',

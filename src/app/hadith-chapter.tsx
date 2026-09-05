@@ -20,7 +20,7 @@ import {
   ListRenderItem,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
 import { colors, alpha } from '../constants/theme';
 import { Hadith } from '../types/hadith';
@@ -28,6 +28,9 @@ import { hadithService } from '../services/hadithService';
 import { HadithHeader } from '../components/hadith/HadithHeader';
 import { GradeBadge } from '../components/hadith/GradeBadge';
 import { HadithNumberBadge } from '../components/hadith/HadithNumberBadge';
+import { settingsService } from '@/services/settingsService';
+import { useFontSizes } from '@/hooks/useFontSizes';
+
 
 type DisplayMode = 'arabic' | 'both' | 'translation';
 
@@ -81,6 +84,23 @@ const HadithCard = React.memo(function HadithCard({
   mode: DisplayMode;
   onPress: () => void;
 }) {
+
+  const { arabic: arabicFontSize, translation: translationFontSize, setArabicSize, setTranslationSize } = useFontSizes();
+
+    useFocusEffect(
+       useCallback(() => {
+         let cancelled = false;
+         settingsService.getArabicFontSize().then((ar) => {
+           if (cancelled) return;
+           setArabicSize(ar);
+         });
+         settingsService.getTranslationFontSize().then((tr) => {
+           if (cancelled) return;
+           setTranslationSize(tr);
+         });
+         return () => { cancelled = true; };
+       }, []),
+     );
   const showArabic = mode === 'arabic' || mode === 'both';
   const showTranslation = mode === 'translation' || mode === 'both';
 
@@ -110,7 +130,7 @@ const HadithCard = React.memo(function HadithCard({
       {/* Arabic text */}
       {showArabic && hadith.arabicText ? (
         <Text
-          style={styles.arabicText}
+          style={[styles.arabicText, { fontSize: arabicFontSize, lineHeight: arabicFontSize * 2 , textAlign: "justify"}]}
           numberOfLines={3}
           ellipsizeMode="tail"
         >
@@ -126,7 +146,7 @@ const HadithCard = React.memo(function HadithCard({
       {/* Translation */}
       {showTranslation && hadith.translation ? (
         <Text
-          style={styles.translationText}
+          style={[styles.translationText, { fontSize: translationFontSize, lineHeight: translationFontSize * 1.65 , textAlign: "justify" }]}
           numberOfLines={4}
           ellipsizeMode="tail"
         >
@@ -251,7 +271,7 @@ export default function HadithChapterScreen() {
         }
         contentContainerStyle={{
           paddingHorizontal: 20,
-          paddingTop: insets.top + 8,
+          paddingTop:  8,
           paddingBottom: insets.bottom + 34,
         }}
       />

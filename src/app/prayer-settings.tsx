@@ -414,7 +414,7 @@ export default function PrayerSettingsScreen() {
         style={styles.scrollView}
         contentContainerStyle={[
           styles.content,
-          { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 34 },
+          { paddingTop: 8, paddingBottom: insets.bottom + 34 },
         ]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"

@@ -24,6 +24,7 @@ import { router } from 'expo-router';
 import Svg, { Path, Circle, G, Rect } from 'react-native-svg';
 import { colors, alpha } from '../constants/theme';
 import { bookmarkService } from '../services/bookmarkService';
+import { CloudIcon, CupIcon, HeartIcon, HomeIcon, MatIcon, MoonIcon, PlaneIcon, ShieldIcon, SunIcon } from '@/components/Icons';
 
 // ============================================
 // TYPES
@@ -49,82 +50,82 @@ interface Dua {
 // CATEGORY ICONS
 // ============================================
 
-function SunIcon({ size = 18 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round">
-      <Circle cx={12} cy={12} r={4} />
-      <Path d="M12 3.5V5M12 19v1.5M3.5 12H5M19 12h1.5M6 6l1.1 1.1M16.9 16.9 18 18M18 6l-1.1 1.1M7.1 16.9 6 18" />
-    </Svg>
-  );
-}
+// function SunIcon({ size = 18 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round">
+//       <Circle cx={12} cy={12} r={4} />
+//       <Path d="M12 3.5V5M12 19v1.5M3.5 12H5M19 12h1.5M6 6l1.1 1.1M16.9 16.9 18 18M18 6l-1.1 1.1M7.1 16.9 6 18" />
+//     </Svg>
+//   );
+// }
 
-function MoonIcon({ size = 18 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
-      <Path d="M16.5 5.2a8 8 0 1 0 4.8 13.1A9 9 0 0 1 16.5 5.2Z" />
-    </Svg>
-  );
-}
+// function MoonIcon({ size = 18 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
+//       <Path d="M16.5 5.2a8 8 0 1 0 4.8 13.1A9 9 0 0 1 16.5 5.2Z" />
+//     </Svg>
+//   );
+// }
 
-function PlaneIcon({ size = 18 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
-      <Path d="M3.5 11.5 20.5 4.5l-7 16-2.4-7.2Z" />
-    </Svg>
-  );
-}
+// function PlaneIcon({ size = 18 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
+//       <Path d="M3.5 11.5 20.5 4.5l-7 16-2.4-7.2Z" />
+//     </Svg>
+//   );
+// }
 
-function CupIcon({ size = 18 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M5 10h11v4a5.5 5.5 0 0 1-11 0Z" />
-      <Path d="M16 11h1.5a2.5 2.5 0 0 1 0 5H16M8 7c0-1 .8-1 .8-2M12 7c0-1 .8-1 .8-2" />
-    </Svg>
-  );
-}
+// function CupIcon({ size = 18 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+//       <Path d="M5 10h11v4a5.5 5.5 0 0 1-11 0Z" />
+//       <Path d="M16 11h1.5a2.5 2.5 0 0 1 0 5H16M8 7c0-1 .8-1 .8-2M12 7c0-1 .8-1 .8-2" />
+//     </Svg>
+//   );
+// }
 
-function MatIcon({ size = 18 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
-      <Rect x={5.5} y={4} width={13} height={16} rx={2} />
-      <Path d="M12 8c-2 1.4-3 2.6-3 4.5V16h6v-3.5c0-1.9-1-3.1-3-4.5Z" />
-    </Svg>
-  );
-}
+// function MatIcon({ size = 18 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
+//       <Rect x={5.5} y={4} width={13} height={16} rx={2} />
+//       <Path d="M12 8c-2 1.4-3 2.6-3 4.5V16h6v-3.5c0-1.9-1-3.1-3-4.5Z" />
+//     </Svg>
+//   );
+// }
 
-function ShieldIcon({ size = 18 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
-      <Path d="M12 3l7 2.6V11c0 4.6-3 7.9-7 9.4-4-1.5-7-4.8-7-9.4V5.6Z" />
-    </Svg>
-  );
-}
+// function ShieldIcon({ size = 18 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
+//       <Path d="M12 3l7 2.6V11c0 4.6-3 7.9-7 9.4-4-1.5-7-4.8-7-9.4V5.6Z" />
+//     </Svg>
+//   );
+// }
 
-function HeartIcon({ size = 18 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
-      <Path d="M12 19s-7-4.6-7-9.5C5 6.6 7 5 9.2 5c1.3 0 2.3.6 2.8 1.6C12.5 5.6 13.5 5 14.8 5 17 5 19 6.6 19 9.5c0 4.9-7 9.5-7 9.5Z" />
-    </Svg>
-  );
-}
+// function HeartIcon({ size = 18 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinejoin="round">
+//       <Path d="M12 19s-7-4.6-7-9.5C5 6.6 7 5 9.2 5c1.3 0 2.3.6 2.8 1.6C12.5 5.6 13.5 5 14.8 5 17 5 19 6.6 19 9.5c0 4.9-7 9.5-7 9.5Z" />
+//     </Svg>
+//   );
+// }
 
-function HomeIcon({ size = 18 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M5 11 12 5l7 6v9H5Z" />
-      <Path d="M10 20v-5h4v5" />
-    </Svg>
-  );
-}
+// function HomeIcon({ size = 18 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+//       <Path d="M5 11 12 5l7 6v9H5Z" />
+//       <Path d="M10 20v-5h4v5" />
+//     </Svg>
+//   );
+// }
 
-function CloudIcon({ size = 18 }: { size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M7 15a4 4 0 0 1 .6-8 5 5 0 0 1 9.6 1.2A3.4 3.4 0 0 1 17 15Z" />
-      <Path d="M12 17v4M9.5 18.5 12 21l2.5-2.5" />
-    </Svg>
-  );
-}
+// function CloudIcon({ size = 18 }: { size?: number }) {
+//   return (
+//     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={colors.primary} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+//       <Path d="M7 15a4 4 0 0 1 .6-8 5 5 0 0 1 9.6 1.2A3.4 3.4 0 0 1 17 15Z" />
+//       <Path d="M12 17v4M9.5 18.5 12 21l2.5-2.5" />
+//     </Svg>
+//   );
+// }
 
 const CATEGORY_ICONS: Record<string, React.FC<{ size?: number }>> = {
   'morning-evening': SunIcon,
@@ -414,11 +415,14 @@ export default function DuaCollectionScreen() {
   return (
     <View style={styles.screen}>
       {/* Header */}
-      <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
+      <View style={[styles.header, { paddingTop:  8 }]}>
+        <View style = {{flexDirection: "row", alignItems: "center"}}>
+
         <Pressable style={styles.backBtn} onPress={() => router.back()}>
           <BackIcon />
         </Pressable>
         <Text style={styles.title}>Duas</Text>
+        </View>
         <View style={styles.headerActions}>
           <Pressable style={styles.iconButton}>
             <SearchIcon />
@@ -519,7 +523,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Poppins',
     fontWeight: '600',
-    fontSize: 26,
+    fontSize: 20,
     letterSpacing: -0.01,
     color: colors.secondary,
   },

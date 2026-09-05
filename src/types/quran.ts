@@ -40,3 +40,20 @@ export interface Juz {
 
 export type QuranBrowseMode = 'surah' | 'juz' | 'page';
 export type ReaderMode = 'ayah' | 'mushaf' | 'page';
+
+
+export interface QuranSearchResult {
+  number: number;
+  numberInSurah: number;
+  text: string;
+  surah: {
+    number: number;
+    name: string;
+    englishName: string;
+    englishNameTranslation: string;
+    numberOfAyahs: number;
+    revelationType: string;
+  };
+  juz: number;
+  page: number;
+}

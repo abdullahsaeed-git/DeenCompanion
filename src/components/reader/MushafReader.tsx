@@ -138,10 +138,10 @@ export function MushafReader({
   const getItemLayout = useCallback(
     (_: any, index: number) => ({
       length: estimatedHeight,
-      offset: estimatedHeight * index + insets.top + 70,
+      offset: estimatedHeight * index + 70,
       index,
     }),
-    [estimatedHeight, insets.top],
+    [estimatedHeight],
   );
 
   // Handle failed scroll — no-op safety valve to prevent crash
@@ -215,8 +215,7 @@ export function MushafReader({
       }
       showsVerticalScrollIndicator={false}
       contentContainerStyle={[
-        styles.listContent,
-        { paddingTop: insets.top + 70 },
+        styles.listContent
       ]}
       removeClippedSubviews={true}
       maxToRenderPerBatch={3}

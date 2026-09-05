@@ -64,7 +64,7 @@ const slides: SlideData[] = [
     headlineBefore: 'Never Miss',
     headlineAccent: 'a Prayer',
     subtitle:
-      'Get accurate prayer times, Qibla direction and timely Adhan notifications based on your location.',
+      'Get accurate prayer times, and timely Adhan notifications based on your location.',
     activeDotIndex: 2,
     ctaType: 'get-started',
   },

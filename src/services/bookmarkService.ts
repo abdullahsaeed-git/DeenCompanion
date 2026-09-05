@@ -11,7 +11,7 @@
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { QuranBookmark, PositionBookmark } from '../types/bookmark';
+import { QuranBookmark, PositionBookmark, LibraryBookmark } from '../types/bookmark';
 import { Hadith } from '../types/hadith';
 
 // ============================================
@@ -24,6 +24,8 @@ const HADITH_BOOKMARKS_KEY = '@deen_companion_hadith_bookmarks_v1';
 
 
 const DUAS_BOOKMARKS_KEY = '@deen_companion_dua_bookmarks_v1';
+
+const LIBRARY_BOOKMARKS_KEY = '@deen_companion_library_bookmarks_v1';
 
 // ============================================
 // DUA BOOKMARK TYPES
@@ -187,18 +189,54 @@ export const bookmarkService = {
     return all.length;
   },
 
-  // ── Combined ──
 
-    async getTotalCount(): Promise<number> {
-    const [quran, position, hadith, duas] = await Promise.all([
-      this.getQuranCount(),
-      this.getPositionCount(),
-      this.getHadithCount(),
-      this.getDuaCount(),
-    ]);
-    return quran + position + hadith + duas;
+
+
+    // ── Library Bookmarks ──
+
+  async getAllLibrary(): Promise<LibraryBookmark[]> {
+    const all = await loadAll<LibraryBookmark>(LIBRARY_BOOKMARKS_KEY);
+    return all.sort((a, b) => b.savedAt - a.savedAt);
   },
 
+  async isLibraryBookmarked(bookId: string): Promise<boolean> {
+    const all = await loadAll<LibraryBookmark>(LIBRARY_BOOKMARKS_KEY);
+    return all.some((b) => b.id === bookId);
+  },
+
+  async saveLibrary(book: { id: string; title: string; author: string; categoryId: string }): Promise<void> {
+    const all = await loadAll<LibraryBookmark>(LIBRARY_BOOKMARKS_KEY);
+    const idx = all.findIndex((b) => b.id === book.id);
+    if (idx >= 0) {
+      all[idx].savedAt = Date.now();
+    } else {
+      all.push({ ...book, savedAt: Date.now() });
+    }
+    await saveAll(LIBRARY_BOOKMARKS_KEY, all);
+  },
+
+  async removeLibrary(bookId: string): Promise<void> {
+    const all = await loadAll<LibraryBookmark>(LIBRARY_BOOKMARKS_KEY);
+    await saveAll(LIBRARY_BOOKMARKS_KEY, all.filter((b) => b.id !== bookId));
+  },
+
+  async toggleLibrary(book: { id: string; title: string; author: string; categoryId: string }): Promise<boolean> {
+    const isBookmarked = await this.isLibraryBookmarked(book.id);
+    if (isBookmarked) {
+      await this.removeLibrary(book.id);
+      return false;
+    } else {
+      await this.saveLibrary(book);
+      return true;
+    }
+  },
+
+  async getLibraryCount(): Promise<number> {
+    const all = await loadAll<LibraryBookmark>(LIBRARY_BOOKMARKS_KEY);
+    return all.length;
+  },
+
+  
 
 
   // ── Dua Bookmarks ──
@@ -208,11 +246,14 @@ export const bookmarkService = {
     return all.sort((a, b) => b.savedAt - a.savedAt);
   },
 
+  
+
   async isDuaBookmarked(duaId: string): Promise<boolean> {
     const all = await loadAll<DuaBookmark>(DUAS_BOOKMARKS_KEY);
     return all.some((b) => b.id === duaId);
   },
 
+  
   async saveDua(dua: DuaData): Promise<void> {
     const all = await loadAll<DuaBookmark>(DUAS_BOOKMARKS_KEY);
     const idx = all.findIndex((b) => b.id === dua.id);
@@ -223,6 +264,7 @@ export const bookmarkService = {
     }
     await saveAll(DUAS_BOOKMARKS_KEY, all);
   },
+  
 
   async removeDua(duaId: string): Promise<void> {
     const all = await loadAll<DuaBookmark>(DUAS_BOOKMARKS_KEY);
@@ -239,8 +281,25 @@ export const bookmarkService = {
       return true;
     }
   },
+  
 
   async getDuaCount(): Promise<number> {
     const all = await loadAll<DuaBookmark>(DUAS_BOOKMARKS_KEY);
     return all.length;
-  }}
+  },
+
+  // ── Combined ──
+
+      async getTotalCount(): Promise<number> {
+    const [quran, position, hadith, duas, library] = await Promise.all([
+      this.getQuranCount(),
+      this.getPositionCount(),
+      this.getHadithCount(),
+      this.getDuaCount(),
+      this.getLibraryCount(),
+    ]);
+    return quran + position + hadith + duas + library;
+  },
+
+
+}

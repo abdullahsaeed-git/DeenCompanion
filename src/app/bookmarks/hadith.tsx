@@ -19,6 +19,7 @@ import { colors, alpha } from '../../constants/theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HadithBookmark, bookmarkService } from '../../services/bookmarkService';
 import { GradeBadge } from '../../components/hadith/GradeBadge';
+import { BackIcon, DeleteIcon, HadithIcon } from '@/components/Icons';
 
 // ============================================
 // HELPERS
@@ -76,15 +77,7 @@ function BookmarkCard({
             style={({ pressed }) => [styles.deleteBtn, pressed && styles.deleteBtnPressed]}
             onPress={onDelete}
           >
-            <Svg width={16} height={16} viewBox="0 0 20 20" fill="none">
-              <Path
-                d="M6 5h8M8 5V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1M5 5l.8 12a1 1 0 0 0 1 .9h6.4a1 1 0 0 0 1-.9L15 5"
-                stroke={colors.error}
-                strokeWidth={1.6}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </Svg>
+            <DeleteIcon size={16} color={colors.error}/>
           </Pressable>
         </View>
       </View>
@@ -157,19 +150,11 @@ export default function LibraryBookmarksScreen() {
 
   return (
     <View style={styles.screen}>
-      <View style={[styles.content, { paddingTop: insets.top + 16 }]}>
+      <View style={[styles.content, { paddingTop:  16 }]}>
         {/* Header */}
         <View style={styles.header}>
           <Pressable style={styles.headerBtn} onPress={() => router.back()}>
-            <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <Path
-                d="M12.5 4.5 7 10l5.5 5.5"
-                stroke={colors.secondary}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </Svg>
+            <BackIcon/>
           </Pressable>
 
           <View style={styles.headerTitleContainer}>
@@ -192,14 +177,7 @@ export default function LibraryBookmarksScreen() {
         ) : bookmarks.length === 0 ? (
           <View style={styles.emptyContainer}>
             <View style={styles.emptyIcon}>
-              <Svg width="40" height="40" viewBox="0 0 20 20" fill="none">
-                <Path
-                  d="M6 3h8v14l-4-3.2L6 17Z"
-                  stroke={colors.textMuted}
-                  strokeWidth="1.5"
-                  strokeLinejoin="round"
-                />
-              </Svg>
+                <HadithIcon size ={40} color= {colors.textMuted}/>
             </View>
             <Text style={styles.emptyTitle}>No bookmarks yet</Text>
             <Text style={styles.emptySubtitle}>
@@ -211,7 +189,7 @@ export default function LibraryBookmarksScreen() {
             data={bookmarks}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: insets.bottom + 20, paddingTop: insets.top +20 }}
+            contentContainerStyle={{ paddingBottom: insets.bottom + 20, paddingTop: 20 }}
             ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
             renderItem={({ item }) => (
               <BookmarkCard
@@ -263,12 +241,12 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontFamily: 'Poppins',
     fontWeight: '600',
-    fontSize: 24,
+    fontSize: 20,
     letterSpacing: -0.01,
     color: colors.secondary,
   },
   headerSubtitle: {
-    marginTop: 2,
+    // marginTop: 2,
     fontSize: 12.5,
     color: colors.textSecondary,
   },

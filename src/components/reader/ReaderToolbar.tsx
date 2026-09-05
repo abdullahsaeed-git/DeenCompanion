@@ -8,10 +8,10 @@
  * since those modes render continuous Arabic text.
  */
 
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-import { colors, alpha } from '../../constants/theme';
-import { ReaderMode } from '../../types/quran';
+import { View, Text, Pressable, StyleSheet } from "react-native";
+import Svg, { Path } from "react-native-svg";
+import { colors, alpha } from "../../constants/theme";
+import { ReaderMode } from "../../types/quran";
 
 interface ReaderToolbarProps {
   readerMode: ReaderMode;
@@ -38,7 +38,7 @@ export function ReaderToolbar({
 }: ReaderToolbarProps) {
   if (!visible) return null;
 
-  const isAyahMode = readerMode === 'ayah';
+  const isAyahMode = readerMode === "ayah";
 
   return (
     <View style={[styles.stickyToolbar, { top: topInset + 70 }]}>
@@ -46,34 +46,50 @@ export function ReaderToolbar({
         <View style={styles.toolChipsContainer}>
           {/* Translation toggle */}
           <Pressable
-            style={[styles.chip, showTranslation ? styles.chipOn : styles.chipOff]}
+            style={[
+              styles.chip,
+              showTranslation ? styles.chipOn : styles.chipOff,
+            ]}
             onPress={() => {
-              !(!showArabic && showTranslation) && setShowTranslation(!showTranslation);
+              if (!showArabic) {
+                setShowArabic(true);
+              }
+              setShowTranslation(!showTranslation);
             }}
           >
-            <Text style={[styles.chipText, !showTranslation && styles.chipTextInactive]}>
+            <Text
+              style={[
+                styles.chipText,
+                !showTranslation && styles.chipTextInactive,
+              ]}
+            >
               Translation
             </Text>
           </Pressable>
 
           {/* Tafsir toggle */}
-          <Pressable
+          {/* <Pressable
             style={[styles.chip, showTafsir ? styles.chipOn : styles.chipOff]}
             onPress={() => setShowTafsir(!showTafsir)}
           >
             <Text style={[styles.chipText, !showTafsir && styles.chipTextInactive]}>
               Tafsir
             </Text>
-          </Pressable>
+          </Pressable> */}
 
           {/* Arabic toggle */}
           <Pressable
             style={[styles.chip, showArabic ? styles.chipOn : styles.chipOff]}
             onPress={() => {
-              !(showArabic && !showTranslation) && setShowArabic(!showArabic);
+              if (!showTranslation) {
+                setShowTranslation(true);
+              }
+              setShowArabic(!showArabic);
             }}
           >
-            <Text style={[styles.chipText, !showArabic && styles.chipTextInactive]}>
+            <Text
+              style={[styles.chipText, !showArabic && styles.chipTextInactive]}
+            >
               Arabic
             </Text>
           </Pressable>
@@ -85,24 +101,24 @@ export function ReaderToolbar({
 
 const styles = StyleSheet.create({
   stickyToolbar: {
-    position: 'absolute',
+    position: "absolute",
     top: 70,
     left: 0,
     right: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 8,
     paddingVertical: 6,
     paddingHorizontal: 20,
-    width: 'auto',
+    width: "auto",
     zIndex: 10,
   },
   toolChipsContainer: {
     borderRadius: 10,
     backgroundColor: colors.background,
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     gap: 6,
   },
   toolBtn: {
@@ -112,12 +128,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderWidth: 1,
     borderColor: colors.border,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   toolBtnText: {
-    fontFamily: 'Inter',
-    fontWeight: '600',
+    fontFamily: "Inter",
+    fontWeight: "600",
     fontSize: 13,
     color: colors.secondary,
   },
@@ -134,11 +150,11 @@ const styles = StyleSheet.create({
     height: 36,
     paddingHorizontal: 14,
     borderRadius: 11,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   chipText: {
-    fontFamily: 'Inter',
-    fontWeight: '600',
+    fontFamily: "Inter",
+    fontWeight: "600",
     fontSize: 12.5,
     color: colors.primary,
   },

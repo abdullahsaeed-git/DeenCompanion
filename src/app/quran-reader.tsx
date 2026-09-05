@@ -7,6 +7,7 @@
  * - Page  (pageNumber):  Page mode only, no toggle
  *
  * Supports scrollToPage param to jump to a specific page in mushaf mode.
+ * Supports scrollToAyah param to jump to a specific ayah in ayah mode.
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
@@ -16,7 +17,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useLocalSearchParams } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import * as Clipboard from 'expo-clipboard';
 import { colors } from '../constants/theme';
 import { Ayah, ReaderMode } from '../types/quran';
@@ -33,6 +34,10 @@ import { AyahActionsSheet } from '../components/reader/AyahActionsSheet';
 import { PageActionsSheet } from '../components/reader/PageActionsSheet';
 import { homeService } from '../services/homeService';
 import { bookmarkService } from '../services/bookmarkService';
+import { settingsService } from '@/services/settingsService';
+
+import { useFontSizes } from '../hooks/useFontSizes';
+import { getLanguage } from '@/services/languageService';
 
 
 export default function QuranReaderScreen() {
@@ -43,6 +48,11 @@ export default function QuranReaderScreen() {
   const scrollToPageParam = params.scrollToPage
     ? Number(params.scrollToPage)
     : null;
+
+  // Read optional scrollToAyah param (from bookmarks navigation)       // NEW
+  const scrollToAyahParam = params.scrollToAyah                         // NEW
+    ? Number(params.scrollToAyah)                                       // NEW
+    : null;                                                             // NEW
 
   const {
     loading,
@@ -80,9 +90,11 @@ export default function QuranReaderScreen() {
   // ── SETTINGS STATE ────────────────────────────────────
   const [showSettingsSheet, setShowSettingsSheet] = useState(false);
   const [showToolbar, setShowToolbar] = useState(true);
-  const [arabicFontSizeAyah, setArabicFontSizeAyah] = useState(22);
-  const [arabicFontSizeMushaf, setArabicFontSizeMushaf] = useState(22);
-  const [translationFontSize, setTranslationFontSize] = useState(14);
+  const { arabic: arabicFontSize, translation: translationFontSize, setArabicSize, setTranslationSize } = useFontSizes();
+  // const [arabicFontSizeAyah, setArabicFontSizeAyah] = useState(22);
+
+  // const [arabicFontSizeMushaf, setArabicFontSizeMushaf] = useState(22);
+  // const [translationFontSize, setTranslationFontSize] = useState(14);
 
   // ── AYAH ACTIONS STATE ────────────────────────────────
   const [showAyahActions, setShowAyahActions] = useState(false);
@@ -95,6 +107,26 @@ export default function QuranReaderScreen() {
   // ── BOOKMARK STATE ────────────────────────────────────
   const [bookmarkedAyahIds, setBookmarkedAyahIds] = useState<Set<string>>(new Set());
   const [bookmarkedPageIds, setBookmarkedPageIds] = useState<Set<string>>(new Set());
+const [lang, setLang] = useState<string>('en');
+
+  // Load saved font sizes on focus (mount + returning from font-settings page)
+  useFocusEffect(
+    useCallback(() => {
+      let cancelled = false;
+      settingsService.getArabicFontSize().then((ar) => {
+        if (cancelled) return;
+        setArabicSize(ar);
+      });
+      settingsService.getTranslationFontSize().then((tr) => {
+        if (cancelled) return;
+        setTranslationSize(tr);
+      });
+
+    const lan = getLanguage();
+    setLang(lan);
+      return () => { cancelled = true; };
+    }, []),
+  );
 
   // Load bookmark IDs when reader opens
   useEffect(() => {
@@ -141,7 +173,7 @@ export default function QuranReaderScreen() {
 
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
 
-    saveTimeoutRef.current = setTimeout(() => {
+    saveTimeoutRef.current = setTimeout(() => { 
       homeService.saveReadingProgress({
         surahNumber: currentSurahNumber,
         surahName: currentSurahName,
@@ -308,7 +340,7 @@ export default function QuranReaderScreen() {
         isPageMode={isPageMode}
         readerMode={readerMode}
         setReaderMode={setReaderModeGuarded}
-        topInset={insets.top}
+        topInset={0}
         onSettingsPress={() => setShowSettingsSheet(true)}
       />
 
@@ -321,7 +353,7 @@ export default function QuranReaderScreen() {
           setShowTafsir={setShowTafsir}
           showArabic={showArabic}
           setShowArabic={setShowArabic}
-          topInset={insets.top}
+          topInset={0}
           visible={showToolbar}
         />
       )}
@@ -342,12 +374,14 @@ export default function QuranReaderScreen() {
           goToPrevJuz={goToPrevJuz}
           goToNextJuz={goToNextJuz}
           onVisibleAyahChanged={handleVisibleAyahChanged}
-          topInset={insets.top}
+          topInset={0}
           bottomInset={insets.bottom}
-          arabicFontSize={arabicFontSizeAyah}
+          arabicFontSize={arabicFontSize}
           translationFontSize={translationFontSize}
           showToolbar={showToolbar}
           onAyahPress={handleAyahPress}
+          scrollToAyah={scrollToAyahParam}
+          language = {lang}
         />
       ) : readerMode === 'mushaf' ? (
         <MushafReader
@@ -360,7 +394,7 @@ export default function QuranReaderScreen() {
           goToNextSurah={goToNextSurah}
           goToPrevJuz={goToPrevJuz}
           goToNextJuz={goToNextJuz}
-          arabicFontSize={arabicFontSizeMushaf}
+          arabicFontSize={arabicFontSize}
           scrollToPage={scrollToPageParam}
           onPagePress={handlePagePress}
         />
@@ -369,7 +403,7 @@ export default function QuranReaderScreen() {
           style={styles.scrollView}
           contentContainerStyle={[
             styles.scrollContent,
-            { paddingTop: insets.top, paddingBottom: insets.bottom + 32 },
+            {  paddingBottom: insets.bottom + 32 },
           ]}
           showsVerticalScrollIndicator={false}
           onScroll={handleScroll}
@@ -380,7 +414,7 @@ export default function QuranReaderScreen() {
             targetPage={targetPage}
             goToPrevPage={goToPrevPage}
             goToNextPage={goToNextPage}
-            arabicFontSize={arabicFontSizeMushaf}
+            arabicFontSize={arabicFontSize}
             onPagePress={handlePagePress}
           />
         </ScrollView>
@@ -391,18 +425,18 @@ export default function QuranReaderScreen() {
         visible={showSettingsSheet}
         onClose={() => setShowSettingsSheet(false)}
         readerMode={readerMode}
-        arabicFontSizeAyah={arabicFontSizeAyah}
-        setArabicFontSizeAyah={setArabicFontSizeAyah}
+        arabicFontSize={arabicFontSize}
+        setArabicFontSize={setArabicSize}
         translationFontSize={translationFontSize}
-        setTranslationFontSize={setTranslationFontSize}
+        setTranslationFontSize={setTranslationSize}
         showTranslation={showTranslation}
         setShowTranslation={setShowTranslation}
         showTafsir={showTafsir}
         setShowTafsir={setShowTafsir}
+        showArabic={showArabic}
+        setShowArabic={setShowArabic}
         showToolbar={showToolbar}
         setShowToolbar={setShowToolbar}
-        arabicFontSizeMushaf={arabicFontSizeMushaf}
-        setArabicFontSizeMushaf={setArabicFontSizeMushaf}
         setReaderMode={setReaderModeGuarded}
         isPageMode={isPageMode}
       />

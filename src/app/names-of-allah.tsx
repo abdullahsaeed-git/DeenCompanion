@@ -18,6 +18,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
 import { colors, alpha } from '../constants/theme';
+import { BackIcon, SearchIcon } from '@/components/Icons';
 
 // ============================================
 // DATA — Asma ul-Husna
@@ -136,37 +137,37 @@ const NAMES: NameOfAllah[] = [
 // ICONS
 // ============================================
 
-function BackIcon() {
-  return (
-    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-      <Path
-        d="M12.5 4.5 7 10l5.5 5.5"
-        stroke={colors.secondary}
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-}
+// function BackIcon() {
+//   return (
+//     <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
+//       <Path
+//         d="M12.5 4.5 7 10l5.5 5.5"
+//         stroke={colors.secondary}
+//         strokeWidth={2}
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+//     </Svg>
+//   );
+// }
 
-function SearchIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 20 20" fill="none">
-      <Path
-        d="M9 3.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Z"
-        stroke={colors.textMuted}
-        strokeWidth={1.8}
-      />
-      <Path
-        d="M13 13l3.5 3.5"
-        stroke={colors.textMuted}
-        strokeWidth={1.8}
-        strokeLinecap="round"
-      />
-    </Svg>
-  );
-}
+// function SearchIcon() {
+//   return (
+//     <Svg width={16} height={16} viewBox="0 0 20 20" fill="none">
+//       <Path
+//         d="M9 3.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Z"
+//         stroke={colors.textMuted}
+//         strokeWidth={1.8}
+//       />
+//       <Path
+//         d="M13 13l3.5 3.5"
+//         stroke={colors.textMuted}
+//         strokeWidth={1.8}
+//         strokeLinecap="round"
+//       />
+//     </Svg>
+//   );
+// }
 
 // ============================================
 // NAME CARD
@@ -212,7 +213,7 @@ export default function NamesOfAllahScreen() {
         style={styles.scrollView}
         contentContainerStyle={[
           styles.content,
-          { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 34 },
+          { paddingTop:   8, paddingBottom: insets.bottom + 34 },
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -281,7 +282,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Poppins',
     fontWeight: '600',
-    fontSize: 24,
+    fontSize: 20,
     color: colors.secondary,
   },
   spacer: { width: 44 },

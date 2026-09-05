@@ -5,10 +5,12 @@
  */
 
 import { View, Text, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
-import { colors } from '../../constants/theme';
+import { colors, fonts, fontSize } from '../../constants/theme';
 import { ArrowRightIcon } from './QuickActions';
+import { FONT_SIZE_CONFIG, getDefaultTranslationSize, settingsService } from '@/services/settingsService';
+import { useCallback, useState } from 'react';
 
 interface HadithOfTheDayProps {
   narrator: string;
@@ -60,6 +62,19 @@ export function HadithOfTheDay({
   onRefresh,
   refreshing,
 }: HadithOfTheDayProps) {
+
+
+   const [arFont, setArFont] = useState<number>(FONT_SIZE_CONFIG.arabic.default);
+    const [trFont, setTrFont] = useState<number>(getDefaultTranslationSize);
+
+     useFocusEffect(
+       useCallback(() => {
+         settingsService.getArabicFontSize().then(setArFont);
+         settingsService.getTranslationFontSize().then(setTrFont);
+       }, []),
+     );
+     
+
   function handleReadMore() {
     router.push({
       pathname: '/hadith-reader',
@@ -93,7 +108,7 @@ export function HadithOfTheDay({
         <Text style={styles.narrator}>Narrated by {narrator}</Text>
       ) : null}
 
-      <Text style={styles.translation} numberOfLines={4} ellipsizeMode="tail">
+      <Text style={[styles.translation , {fontSize : trFont , lineHeight: arFont * 1.3, textAlign: "justify"}]} numberOfLines={4} ellipsizeMode="tail">
         "{translation}"
       </Text>
 

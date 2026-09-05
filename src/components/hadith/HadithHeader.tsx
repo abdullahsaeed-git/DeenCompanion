@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Amiri',
     fontSize: 16,
     color: colors.primary,
-    marginTop: 3,
+    // marginTop: 3,
   },
   subtitle: {
     fontSize: 11.5,
